@@ -1,0 +1,138 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+
+{% block head_title %}Entrance preparation | Devoir {% endblock %}
+
+{% block contenu %}
+<!-- PROFILE FEATURE -->
+
+    {% include 'cours/header_profile.html' %}
+    <!-- CONTEN BAR -->
+    <section class="content-bar">
+        <div class="container">
+            <ul>
+                <li>
+                    <a href="{% url 'account_apprentissage' %}">
+                        <i class="icon md-book-1"></i>
+                        Mes cours
+                    </a>
+                </li>
+                <li class="current">
+                    <a href="{% url 'account_devoir' %}">
+                        <i class="icon md-shopping"></i>
+                        Mes devoirs
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'account_profil_invite' %}">
+                        <i class="icon md-user-minus"></i>
+                        Information
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+   <!-- END / CONTENT BAR -->
+
+
+    <!-- COURSE CONCERN -->
+    <section id="course-concern" class="course-concern">
+        <div class="container">
+
+            <div class="table-asignment">
+                <div class="table-wrap">
+                    <!-- TABLE HEAD -->
+                    <div class="table-head">
+                        <div class="submissions"></div>
+                        <div class="total-subm">Correction</div>
+                        <div class="replied">Tentatives</div>
+                        <div class="latest-reply">Fin du devoir</div>
+                        <div class="tb-icon"></div>
+                    </div>
+                    <!-- END / TABLE HEAD -->
+
+                    <!-- TABLE BODY -->
+                    <div class="table-body">
+                        {% for classe in mesDevoirs %}
+                            <!-- TABLE ITEM -->
+                            <div class="table-item">
+                                <div class="thead">
+                                    <div class="submissions"><a href="#">Cours : {{ classe.classe.nom }}</a></div>
+                                    <div class="total-subm"></div>
+                                    <div class="replied"></div>
+                                    <div class="latest-reply"></div>
+                                    <div class="toggle tb-icon">
+                                        <a href="#"><i class="fa fa-angle-down"></i></a>
+                                    </div>
+                                </div>
+
+                                <div class="tbody">
+                                    {% for devoir in classe.devoirs %}
+                                        <!-- ITEM -->
+                                        <div class="item">
+                                            <div class="submissions"><a href="#">{{ devoir.titre }}</a></div>
+                                            <div class="total-subm">
+                                                {% if devoir.correction %}
+                                                    Disponible
+                                                {% else %}
+                                                    Pas disponible
+                                                {% endif %}
+                                            </div>
+                                            <div class="replied">{{ devoir.nombreEssai }}</div>
+                                            <div class="latest-reply">{{ devoir.dateFin }}</div>
+                                            <div class="tb-icon">
+                                                <a href="#"><i class="fa fa-times-circle"></i></a>
+                                            </div>
+                                        </div>
+                                        <!-- END / ITEM -->
+                                    {% empty %}
+                                        <!-- ITEM -->
+                                        <div class="item">
+                                            <div class="submissions"><a href="#">Vous n'avez pas encore de devoirs pour ce cours</a></div>
+                                            <div class="total-subm"></div>
+                                            <div class="replied"></div>
+                                            <div class="latest-reply"></div>
+                                        </div>
+                                        <!-- END / ITEM -->
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- END / TABLE ITEM -->
+                        {% endfor %}
+                    </div>
+                    <!-- END / TABLE BODY -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END / COURSE CONCERN -->
+{% endblock %}
+
+{% block extra_javascript %}
+    <script type="text/javascript">
+
+        $.each($('.table-wrap'), function() {
+            $(this)
+                .find('.table-item')
+                .children('.thead:not(.active)')
+                .next('.tbody').hide();
+            $(this)
+                .find('.table-item')
+                .delegate('.thead', 'click', function(evt) {
+                    evt.preventDefault();
+                    if ($(this).hasClass('active')==false) {
+                        $('.table-item')
+                            .find('.thead')
+                            .removeClass('active')
+                            .siblings('.tbody')
+                            .slideUp(200);
+                    }
+                    $(this)
+                        .toggleClass('active')
+                        .siblings('.tbody')
+                        .slideToggle(200);
+                });
+        });
+
+    </script>
+{% endblock %}

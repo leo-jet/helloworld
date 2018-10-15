@@ -1,0 +1,28 @@
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+<!-- DC SECTION INFO -->
+<div class="dc-section-info">
+    <!-- DC SECTION BODY -->
+    <div class="dc-section-body">
+        <!-- DC UNIT -->
+        <div class="dc-unit-info dc-course-item">
+            <div class="dc-content-title">
+                <h5 class="xsm black">Nouvelle question</h5>
+                <div class="course-region-tool">
+                    <a href="#" class="edit" title="edit"><i class="icon md-pencil"></i></a>
+                    <a href="#" class="drag" title="drag"><i class="fa fa-arrows"></i></a>
+                    <a href="#" class="delete" id="delete_nouvelle_question" title="delete"><i class="icon md-recycle"></i></a>
+                    <a href="#" class="save" title="save"><i class="fa fa-save"></i></a>
+                </div>
+            </div>
+            <div class="unit-body dc-item-body">
+                {% csrf_token %}
+                {% crispy formQuestion %}
+            </div>
+
+        </div>
+        <!-- END / DC UNIT -->
+    </div>
+    <!-- END / DC SECTION BODY -->
+</div>
+<!-- END / DC SECTION INFO -->

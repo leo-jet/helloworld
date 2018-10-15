@@ -1,0 +1,92 @@
+{% extends "blog/base.html" %}
+{% block titre %}
+    Liste de remarques HOMSCHOOL
+{% endblock %}
+{% block content %}
+    <!-- Blog Post -->
+
+<form action="https://www.homeschool-developer.ga/paiement/finition/" method="POST" id="wecashup">{% csrf_token %}
+        <script async src="https://www.wecashup.com/library/MobileMoney.js" class="wecashup_button"
+          data-demo
+          data-sender-lang="en"
+          data-receiver-uid="QwfbFHilryWs2nqv98iXkxhj3dn1"
+          data-receiver-public-key="deXvKIHI5f7KhymCMlFNW9WUZUHjrAyuoqd6Uoo9BkYG"
+          data-sender-phonenumber="+237671234567"
+          data-transaction-sender-firstname="Tata"
+          data-transaction-sender-lastname="BONGA"
+          data-transaction-parent-uid=""
+          data-transaction-receiver-currency="XAF"
+          data-transaction-receiver-total-amount="594426"
+          data-transaction-receiver-reference="{{ today }}"
+          data-transaction-sender-reference="{{ today }}"
+          data-transaction-method="pull"
+          data-image="https://pbs.twimg.com/profile_images/884711906786906112/f2ZU9nRD_400x400.jpg"
+          data-name="Air France"
+          data-cash="true"
+          data-telecom="true"
+          data-m-wallet="true"
+          data-split="true"
+          data-crypto="true"
+          configuration-id="3"
+          data-marketplace-mode="false"
+          data-product-1-name="Billet ABJ PRS"
+          data-product-1-quantity="1"
+          data-product-1-unit-price="594426"
+          data-product-1-reference="XVT2VBF"
+          data-product-1-category="Billeterie"
+          data-product-1-description="France's in the Air"
+
+        >
+        </script>
+    </form>
+
+    {% for obj in object_list %}
+            <div class="card" style="{% if obj.resolu %}border: 5px solid #097506;{% else %}border: 5px solid #738d93;{% endif %}">
+                <div class="card-block">
+                    <div class="card-body">
+                        <h2 class="card-title"><a href='{{ obj.get_absolute_url }}'>{{ obj.title }}</a></h2>
+                        {{ obj.get_markdown|truncatechars_html:120 }}
+                        <a href="{{ obj.get_absolute_url }}" class="btn btn-primary" role="button">Voir le commentaire &rarr;</a>
+                    </div>
+                    <br>
+                    <div class="card-footer">
+                        Posté le {{ obj.timestamp |date:"d-M-Y à H:i:s" }} Par {{ obj.user.username }} </a>
+                    </div>
+                </div>
+            </div>
+            <span style="margin: 20px"></span>
+        {% endfor %}
+
+        <div class="pagination">
+            <span class="step-links">
+                {% if object_list.has_previous %}
+                    <a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+                </span>
+
+                {% if object_list.has_next %}
+                    <a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
+                {% endif %}
+            </span>
+        </div>
+
+{% endblock content %}
+
+{% block commentaire %}
+    <form method='GET' action='' class='row'>
+        <div class="card my-4">
+            <h5 class="card-header">Chercher un commentaire</h5>
+            <div class="card-body">
+                <div class="input-group">
+                    <input class='form-control' type='text' name='q' placeholder='Search posts' value='{{ request.GET.q }}'/>
+                    <span class="input-group-btn">
+                        <button class='btn btn-default' type='submit'>Go ! <i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock %}

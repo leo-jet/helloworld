@@ -1,0 +1,28 @@
+{% extends 'cours/base_asignment.html' %}
+{% load staticfiles %}
+
+{% block head_title %}Entrance preparation | Envoyé un devoir{% endblock %}
+
+{% block contenu %}
+<section id="learning-section" class="learning-section learn-section">
+    <label name="classeConfiguration" id="{{ classe.idClass }}" hidden></label>
+    <label name="chapitre" id="{{ chapitre.id }}" hidden></label>
+        <div class="container">
+            <div class="title-ct">
+                <h3><strong>Chapitre : </strong>{{ chapitre.titre }}</h3>
+                <div class="tt-right">
+                    <input type="checkbox" id="markaslearned">
+                    <label for="markaslearned">
+                        Marquer comme lu
+                        <i class="icon md-check-2"></i>
+                    </label>
+                </div>
+            </div>
+            <div class="abc">
+                <div class="video embed-responsive embed-responsive-16by9">
+                    {{ chapitre.contenu|safe }}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tags %}
+{% load crispy_forms_tags %}
+
+{% block extraCSS %}
+    <link href="{% static 'css/icheck/icheck-bootstrap.css' %}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+    <link href="{% static 'css/jquery.timepicker.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block extraStyle %}
+
+    <style>
+        .chapitre-row:hover{
+            cursor: pointer;
+            background-color: #3c8dbc !important;
+        }
+    </style>
+{% endblock %}
+
+{% block donnerDevoir %}
+    <li class="dropdown notifications-menu">
+        <!-- Menu toggle button -->
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-book"></i>
+            <span class="label label-warning" id="nombreQuestions"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li class="header">Vous avez <label name="nombreQuestions"></label> questions</li>
+            <li>
+                <!-- Inner Menu: contains the notifications -->
+                <ul class="menu">
+                    <li>
+                        <a href="#" name="donnerDevoir" class="btn btn-primary">Donner ce devoir</a>
+                    </li>
+                    <!-- end notification -->
+                </ul>
+            </li>
+            <li class="footer"><a href="#">View all</a></li>
+        </ul>
+    </li>
+    <li class="dropdown tasks-menu">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-flag-o"></i>
+            <span class="label label-danger">{{ nombreInscription }}</span>
+        </a>
+        <ul class="dropdown-menu">
+            <li class="header">Vous avez {{ nombreInscription }} demandes d'inscription</li>
+            <li class="footer">
+                <a href="{% url 'demande-inscription' %}">Voir toutes les demandes. </a>
+            </li>
+        </ul>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <div ng-controller="quizz">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="box box-primary">
+                    <div class="box-header">Chapitres</div>
+                    <div class="box-body box-profile">
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item chapitre-row" ng-repeat="(key, chapitre) in chapitres" ng-click="clickQuestionsChapitre(chapitre.intitule)">
+                                <b> {$ chapitre.intitule $}</b> <b class="pull-right">{$ chapitre.nbQuestions $} </b>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="box box-primary">
+                    <div class="box-header">{$ chapitreEnCours $}</div>
+                    <div class="box-body box-profile">
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item" ng-repeat="(key, question) in questions">
+                                <div>
+                                    Question {$ key $}
+                                    <a ng-hide="showAjouter(question)"><i class="fa fa-plus pull-right" aria-hidden="true" ng-click="clickAjouterQuestion(question)"></i></a>
+                                    <a ng-show="showAjouter(question)" class="bg-danger"><i class="fa fa-minus pull-right" aria-hidden="true" ng-click="clickSupprimerQuestion(question)"></i></a>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        {$ question.enonce $}
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="checkbox icheck-primary" ng-repeat="(key2, proposition) in question.propositions" ng-if="question.choixMultiple">
+                                            <input id="proposition{$ question.idQuestion $}{$ proposition.idProposition $}"  ng-if="question.choixMultiple" type="checkbox" name="proposition" />
+                                            <label for="proposition{$ question.idQuestion $}{$ proposition.idProposition $}">{$ proposition.enonce $} </label>
+                                        </div>
+                                        <div class="radio icheck-primary" ng-repeat="(key3, proposition) in question.propositions" ng-if="!question.choixMultiple">
+                                            <input id="proposition{$ question.idQuestion $}{$ proposition.idProposition $}"  ng-if="!question.choixMultiple" type="radio" name="proposition" />
+                                            <label for="proposition{$ question.idQuestion $}{$ proposition.idProposition $}">{$ proposition.enonce $} </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modalDevoir" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    {% crispy form %}
+                    <a name="move-to" class="btn btn-primary">Submit</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block extraJavascript %}
+    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+    <script src="{% static 'js/jquery.timepicker.js' %}"></script>
+    <script>
+        $('input[name="periode"]').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+            locale: {
+                format: 'MM/DD/YYYY h:mm A'
+            }
+        });
+        $('input[name="duree"]').timepicker();
+        var app = angular.module("homeschool", []);
+        app.config(function($interpolateProvider) {
+            $interpolateProvider.startSymbol('{$');
+            $interpolateProvider.endSymbol('$}');
+        });
+
+        app.controller('quizz', function($scope, $http, $location) {
+            $scope.chapitreEnCours = "Aucun chapitre sélectionné !"
+            $scope.listeQuestionsChoisies = [];
+            $http({
+                url: "{% url 'chapitres-by-matieres' %}",
+                method: "GET",
+            }).then(function successCallback(response) {
+                $scope.chapitres = response.data.chapitres
+            });
+            $scope.clickQuestionsChapitre = function (intitule) {
+                $scope.chapitreEnCours = intitule;
+                $http({
+                    url: "{% url 'questions-by-chapitre' %}",
+                    method: "GET",
+                    params: {"chapitreIntitule": intitule}
+                }).then(function successCallback(response) {
+                    $scope.questions = response.data.questions
+                });
+            };
+            $scope.clickAjouterQuestion = function (question) {
+                $scope.listeQuestionsChoisies.push(question.idQuestion);
+                $("#nombreQuestions").empty();
+                $("#nombreQuestions").append($scope.listeQuestionsChoisies.length);
+                $("label[name='nombreQuestions']").empty();
+                $("label[name='nombreQuestions']").append($scope.listeQuestionsChoisies.length);
+            };
+            $scope.clickSupprimerQuestion = function (question) {
+                if($scope.listeQuestionsChoisies.indexOf(question.idQuestion)!=-1){
+                    index = $scope.listeQuestionsChoisies.indexOf(question.idQuestion);
+                    $scope.listeQuestionsChoisies.splice(index, 1);
+                    $("#nombreQuestions").empty();
+                    $("#nombreQuestions").append($scope.listeQuestionsChoisies.length);
+                    $("label[name='nombreQuestions']").empty();
+                    $("label[name='nombreQuestions']").append($scope.listeQuestionsChoisies.length);
+                }
+            };
+            $scope.showAjouter = function (question) {
+                if($scope.listeQuestionsChoisies.indexOf(question.idQuestion)==-1){
+                    return false;
+                }
+                return true;
+            };
+            $("a[name='donnerDevoir']").click(function () {
+                $("#modalDevoir").modal();
+                $("#id_idsQuestions").val($scope.listeQuestionsChoisies);
+
+            });
+            $("a[name='move-to']").on("click", function(e){
+                e.preventDefault();
+                $('.form-horizontal').attr('action', "{% url 'create-devoir' %}").submit();
+            });
+        });
+
+    </script>
+{% endblock %}

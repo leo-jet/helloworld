@@ -1,0 +1,573 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+
+{% block head_title %}Entrance preparation | Devoir {% endblock %}
+
+{% block contenu %}
+<!-- BANNER CREATE COURSE -->
+    <section class="sub-banner sub-banner-create-course">
+        <div class="awe-parallax bg-profile-feature"></div>
+        <div class="awe-overlay overlay-color-3"></div>
+        <div class="container">
+            <h2 class="md ilbl">Title of the course goes here</h2>
+            <i class="icon md-pencil"></i>
+        </div>
+    </section>
+    <!-- END / BANNER CREATE COURSE -->
+
+    <!-- CREATE COURSE CONTENT -->
+    <section id="create-course-section" class="create-course-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                        <div class="create-course-sidebar">
+                            <ul class="list-bar">
+                                <li><span class="count">1</span>Information Basique</li>
+                                <li><span class="count">2</span>Creation des chapitres</li>
+                                <li><span class="count">3</span>Creation des Travaux Dirigés</li>
+                                <li class="active"><span class="count">4</span>Creation des examens</li>
+                                <li><span class="count">5</span>Publier le cours</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                <div class="col-md-9">
+                    <div class="create-course-content">
+                        <ul class="dc-btn">
+                            <li>
+                                <a href="#" class="mc-btn-3 btn-style-7"><i class="icon md-plus"></i>Ajouter un TD</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <!-- DESIGN OUTLINE -->
+                            <div class="tab-pane fade in active" id="design-outline">
+                                <!-- SECTIONS -->
+                                <div class="dc-sections">
+                                    <!-- DC SECTION INFO -->
+                                    <div class="dc-section-info">
+                                        <!-- DC SECTION BODY -->
+                                        <div class="dc-section-body">
+                                            <!-- DC QUIZZ -->
+                                            <div class="dc-quizz-info dc-course-item">
+                                                <div class="dc-content-title">
+                                                    <h5 class="xsm black">Nouveau TD</h5>
+                                                    <div class="course-region-tool">
+                                                        <a href="#" class="delete" title="delete"><i class="icon md-recycle"></i></a>
+                                                        <a href="#" class="save" title="save"><i class="fa fa-save"></i></a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="quizz-body dc-item-body">
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label for="titre">
+                                                                Titre :
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-item">
+                                                                <input style="width: 100%;" type="text">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label for="debut">Date de début : </label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-item date-input">
+                                                                <input style="width: 100%;" type="text" id="debut">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="fin">Date de fin : </label>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div class="form-item date-input">
+                                                                <input style="width: 100%;" type="text" id="fin">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-item nombre-essai">
+                                                        <label for="essai">Nombre d'essais : </label>
+                                                        <input style="width: 80px;" type="number" id="essai" name="quantity" min="1" max="100">
+                                                    </div>
+                                                    <div class="form-item form-checkbox checkbox-style">
+                                                        <input type="checkbox" id="showanswer">
+                                                        <label for="showanswer">
+                                                            <i class="icon-checkbox icon md-check-1"></i>
+                                                            Montrer la réponse
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="form-item form-checkbox checkbox-style">
+                                                        <input type="checkbox" id="limittime">
+                                                        <label for="limittime">
+                                                            <i class="icon-checkbox icon md-check-1"></i>
+                                                            Durée limitée
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-item duree">
+                                                        <label for="duree">Durée : </label>
+                                                        <input style="width: 110px;" type="text" id="duree">
+                                                    </div>
+                                                    <div class="form-item">
+                                                        <label for="chapitre">Chapitre : </label>
+                                                        <select class="selectpicker" id="chapitre">
+                                                            <option>Mustard</option>
+                                                            <option>Ketchup</option>
+                                                            <option>Relish</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-2">
+                                                            <label for="consigne">Consignes</label>
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            <div class="form-item">
+                                                                <textarea id="consigne" name="description" placeholder="Consignes pour le TD"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-item-wrap">
+                                                        <div class="form-items">
+                                                            <ul class="dc-btn">
+                                                                <li>
+                                                                    <a href="#addquestion" class="mc-btn-3 btn-style-7 open-popup-link"><i class="icon md-plus"></i>Ajouter une(des) question(s)</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="form-items">
+                                                            <div class="quest">
+                                                                <span>Question 1 : Lorem ipsum Donor de blah blah blahahshshsh js</span>
+                                                            </div>
+                                                            <div class="form-item">
+                                                                <input type="text" placeholder="score">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-items">
+                                                            <div class="quest">
+                                                                <span>Question 2 : Lorem ipsum Donor de blah blah blahahshshsh js</span>
+                                                            </div>
+                                                            <div class="form-item">
+                                                                <ul class="dc-btn">
+                                                                    <li>
+                                                                        <a href="#" class="edit" title="edit"><i class="icon md-pencil"></i></a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a href="#" class="delete" title="delete"><i class="icon md-recycle"></i></a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- END / DC QUIZZ -->
+
+                                            <!-- DC ASSIGNMENT -->
+                                            <div class="dc-assignment-info dc-course-item">
+                                                <div class="dc-content-title">
+                                                    <h5 class="xsm black">Liste des TD</h5>
+                                                </div>
+
+                                                <div class="assignment-body dc-item-body">
+                                                    <div class="content-item-info">
+                                                        <div class="upload-thumb">
+                                                            <img src="images/video-upload.jpg" alt="">
+                                                        </div>
+                                                        <div class="upload-cnt">
+                                                            <div class="title-file">
+                                                               <span>TD chapitre 2</span>
+                                                            </div>
+                                                            <div class="upload-meta">
+                                                                <span>Uploaded by Admin . 30, May,2014</span>
+                                                            </div>
+                                                            <div class="upload-meta">
+                                                                <span>Uploaded by Admin . 30, May,2014</span>
+                                                            </div>
+                                                            <div class="upload-footer">
+                                                                <a href="#">Modifier</a>
+                                                                <a href="#">Visualiser</a>
+                                                                <a href="#">Supprimer</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- END / DC ASSIGNMENT -->
+
+
+                                            <!-- DC ASSIGNMENT -->
+                                            <div class="dc-assignment-info dc-course-item">
+                                                <div class="assignment-body dc-item-body">
+                                                    <div class="content-item-info">
+                                                        <div class="upload-thumb">
+                                                            <img src="images/video-upload.jpg" alt="">
+                                                        </div>
+                                                        <div class="upload-cnt">
+                                                            <div class="title-file">
+                                                               <span>TD chapitre 1</span>
+                                                            </div>
+                                                            <div class="upload-meta">
+                                                                <span>Uploaded by Admin . 30, May,2014</span>
+                                                            </div>
+                                                            <div class="upload-footer">
+                                                                <a href="#">Modifier</a>
+                                                                <a href="#">Visualiser</a>
+                                                                <a href="#">Supprimer</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- END / DC ASSIGNMENT -->
+                                        </div>
+                                        <!-- END / DC SECTION BODY -->
+                                        <div class="form-action">
+                                            <input type="submit" value="Enrégistrer et continuer" onclick="gotoPublierCours();" class="submit mc-btn-3 btn-style-1">
+                                        </div>
+                                    </div>
+                                    <!-- END / DC SECTION INFO -->
+
+                                </div>
+                                <!-- END / SECTIONS -->
+                            </div>
+                            <!-- END / DESIGN OUTLINE -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END / CREATE COURSE CONTENT -->
+
+    <!-- ADD QUESTION POPUP -->
+    <div id="addquestion" class="design-course-popup mfp-hide">
+        <div class="dc-sections">
+            <!-- DC SECTION INFO -->
+            <div class="dc-section-info">
+                <!-- DC SECTION BODY -->
+                <div class="dc-section-body">
+                    <!-- DC QUIZZ -->
+                    <div class="dc-quizz-info dc-course-item">
+                        <div class="dc-content-title">
+                            <h5 class="xsm black">Configuration de la question</h5>
+                            <div class="course-region-tool">
+                                <a href="#" class="delete" title="delete"><i class="icon md-recycle"></i></a>
+                                <a href="#" class="save" title="save"><i class="fa fa-save"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="quizz-body dc-item-body">
+                            <div class="form-item form-checkbox checkbox-style">
+                                <input type="checkbox" id="showanswer">
+                                <label for="showanswer">
+                                    <i class="icon-checkbox icon md-check-1"></i>
+                                    Question à choix multiple
+                                </label>
+                            </div>
+
+                            <div class="form-item">
+                                <label for="chapitre">Chapitre : </label>
+                                <select class="selectpicker" id="chapitre">
+                                    <option>Mustard</option>
+                                    <option>Ketchup</option>
+                                    <option>Relish</option>
+                                </select>
+                            </div>
+                            <div class="form-item">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <label for="enonce">Enoncé</label>
+                                    </div>
+                                    <div class="col-md-11">
+                                        <textarea id="enonce" name="descriptionEnonce" placeholder="Enoncé de la question"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-item">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <label for="explication">Explication</label>
+                                    </div>
+                                    <div class="col-md-11">
+                                        <textarea id="explication" name="explicationEnonce" placeholder="Explication"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END / DC QUIZZ -->
+
+
+                    <!-- DC ASSIGNMENT -->
+                    <div class="dc-assignment-info dc-course-item">
+                        <div class="dc-content-title">
+                            <h5 class="xsm black">Propositions</h5>
+                        </div>
+
+                        <ul class="dc-btn">
+                            <li>
+                                <a href="#addquestion" class="mc-btn-3 btn-style-7"><i class="icon md-plus"></i>Nouvelle proposition</a>
+                            </li>
+                        </ul>
+
+
+                        <!-- DC ASSIGNMENT -->
+                        <div class="dc-assignment-info dc-course-item">
+                            <div class="assignment-body dc-item-body">
+                                <div class="content-item-info">
+                                    <div class="form-item form-checkbox checkbox-style">
+                                        <input type="checkbox" id="reponse">
+                                        <label for="reponse">
+                                            <i class="icon-checkbox icon md-check-1"></i>
+                                            Réponse
+                                        </label>
+                                    </div>
+                                    <div class="form-item">
+                                        <div class="row">
+                                            <div class="col-md-1">
+                                                <label for="enonceProposition">Enoncé</label>
+                                            </div>
+                                            <div class="col-md-11">
+                                                <textarea id="enonceProposition" name="propositionEnonce"
+                                                          placeholder="Enoncé de la question"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END / DC ASSIGNMENT -->
+
+                        <div class="assignment-body dc-item-body">
+                            <div class="content-item-info">
+                                Lazy-loading option preloads nearby items. It accepts an array with two integers.
+                                The first is the number of items to preload before the current. The second is the number
+                                of images to preload after the current. For example, preload: [1,3] will load 3 next
+                                items and 1 that is before current. These values are automatically switched based on
+                                direction of movement.
+                                By default all what it does is just searches for an image tag and preloads it with
+                                JavaScript. But you can extend it and do your custom preloading logic with help of
+                                lazyLoad event, like so:
+                            <div class="upload-cnt">
+                                    <div class="upload-footer">
+                                        <a href="#">Réponse : non </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END / DC ASSIGNMENT -->
+
+                    <!-- DC ASSIGNMENT -->
+                    <div class="dc-assignment-info dc-course-item">
+                        <div class="assignment-body dc-item-body">
+                            <div class="content-item-info">
+                                Lazy-loading option preloads nearby items. It accepts an array with two integers.
+                                The first is the number of items to preload before the current. The second is the number
+                                of images to preload after the current. For example, preload: [1,3] will load 3 next
+                                items and 1 that is before current. These values are automatically switched based on
+                                direction of movement.
+                                By default all what it does is just searches for an image tag and preloads it with
+                                JavaScript. But you can extend it and do your custom preloading logic with help of
+                                lazyLoad event, like so:
+                            <div class="upload-cnt">
+                                    <div class="upload-footer">
+                                        <a href="#">Réponse : non </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END / DC ASSIGNMENT -->
+                </div>
+                <!-- END / DC SECTION BODY -->
+
+            </div>
+            <!-- END / DC SECTION INFO -->
+
+        </div>
+        <!-- END / SECTIONS -->
+    </div>
+    <!-- END / ADD QUESTION POPUP -->
+{% endblock %}
+
+{% block extra_javascript %}
+    <script type="text/javascript">
+        function gotoPublierCours() {
+            window.location.href = "{% url 'creation-publier' %}";
+        }
+        CKEDITOR.replace( 'description', {
+            skin: 'kama',
+            extraPlugins: 'mathjax,uploadimage,image2',
+            mathJaxLib: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML',
+            height: 320,
+            // Upload images to a CKFinder connector (note that the response type is set to JSON).
+            uploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
+
+            // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+            filebrowserBrowseUrl: '/ckeditor/browse/',
+            filebrowserImageBrowseUrl: '/ckeditor/browse/',
+            filebrowserUploadUrl: '/ckeditor/upload/',
+            filebrowserImageUploadUrl: '/ckeditor/upload/',
+
+            // The following options are not necessary and are used here for presentation purposes only.
+            // They configure the Styles drop-down list and widgets to use classes.
+
+            stylesSet: [
+                { name: 'Narrow image', type: 'widget', widget: 'image', attributes: { 'class': 'image-narrow' } },
+                { name: 'Wide image', type: 'widget', widget: 'image', attributes: { 'class': 'image-wide' } }
+            ],
+
+            // Load the default contents.css file plus customizations for this sample.
+            contentsCss: [ CKEDITOR.basePath + 'contents.css', 'https://sdk.ckeditor.com/samples/assets/css/widgetstyles.css' ],
+
+            // Configure the Enhanced Image plugin to use classes instead of styles and to disable the
+            // resizer (because image size is controlled by widget styles or the image takes maximum
+            // 100% of the editor width).
+            image2_alignClasses: [ 'image-align-left', 'image-align-center', 'image-align-right' ],
+            image2_disableResizer: true
+        });
+        $('#fin').datetimepicker({
+            isRTL: false,
+            format: 'dd - mm - yyyy hh:ii',
+            autoclose:true,
+            language: 'fr'
+        });
+        $('#debut').datetimepicker({
+            isRTL: false,
+            format: 'dd - mm - yyyy hh:ii',
+            autoclose:true,
+            language: 'fr'
+        });
+        $('#duree').timepicker({
+            timeFormat : 'HH:mm',
+            interval: 15,
+            minTime: '0:15',
+            maxTime: '4:00',
+            defaultTime: '0:15',
+            startTime: '0:15',
+        });
+        $('.open-popup-link').magnificPopup({
+            type:'inline',
+            callbacks: {
+                open: function() {
+                    CKEDITOR.replace( 'descriptionEnonce', {
+                        skin: 'kama',
+                        extraPlugins: 'mathjax,uploadimage,image2',
+                        mathJaxLib: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML',
+                        height: 320,
+                        // Upload images to a CKFinder connector (note that the response type is set to JSON).
+                        uploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
+
+                        // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+                        filebrowserBrowseUrl: '/ckeditor/browse/',
+                        filebrowserImageBrowseUrl: '/ckeditor/browse/',
+                        filebrowserUploadUrl: '/ckeditor/upload/',
+                        filebrowserImageUploadUrl: '/ckeditor/upload/',
+
+                        // The following options are not necessary and are used here for presentation purposes only.
+                        // They configure the Styles drop-down list and widgets to use classes.
+
+                        stylesSet: [
+                            { name: 'Narrow image', type: 'widget', widget: 'image', attributes: { 'class': 'image-narrow' } },
+                            { name: 'Wide image', type: 'widget', widget: 'image', attributes: { 'class': 'image-wide' } }
+                        ],
+
+                        // Load the default contents.css file plus customizations for this sample.
+                        contentsCss: [ CKEDITOR.basePath + 'contents.css', 'https://sdk.ckeditor.com/samples/assets/css/widgetstyles.css' ],
+
+                        // Configure the Enhanced Image plugin to use classes instead of styles and to disable the
+                        // resizer (because image size is controlled by widget styles or the image takes maximum
+                        // 100% of the editor width).
+                        image2_alignClasses: [ 'image-align-left', 'image-align-center', 'image-align-right' ],
+                        image2_disableResizer: true
+                    });
+                    CKEDITOR.replace( 'explicationEnonce', {
+                        skin: 'kama',
+                        extraPlugins: 'mathjax,uploadimage,image2',
+                        mathJaxLib: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML',
+                        height: 320,
+                        // Upload images to a CKFinder connector (note that the response type is set to JSON).
+                        uploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
+
+                        // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+                        filebrowserBrowseUrl: '/ckeditor/browse/',
+                        filebrowserImageBrowseUrl: '/ckeditor/browse/',
+                        filebrowserUploadUrl: '/ckeditor/upload/',
+                        filebrowserImageUploadUrl: '/ckeditor/upload/',
+
+                        // The following options are not necessary and are used here for presentation purposes only.
+                        // They configure the Styles drop-down list and widgets to use classes.
+
+                        stylesSet: [
+                            { name: 'Narrow image', type: 'widget', widget: 'image', attributes: { 'class': 'image-narrow' } },
+                            { name: 'Wide image', type: 'widget', widget: 'image', attributes: { 'class': 'image-wide' } }
+                        ],
+
+                        // Load the default contents.css file plus customizations for this sample.
+                        contentsCss: [ CKEDITOR.basePath + 'contents.css', 'https://sdk.ckeditor.com/samples/assets/css/widgetstyles.css' ],
+
+                        // Configure the Enhanced Image plugin to use classes instead of styles and to disable the
+                        // resizer (because image size is controlled by widget styles or the image takes maximum
+                        // 100% of the editor width).
+                        image2_alignClasses: [ 'image-align-left', 'image-align-center', 'image-align-right' ],
+                        image2_disableResizer: true
+                    });
+                    CKEDITOR.replace( 'propositionEnonce', {
+                        skin: 'kama',
+                        extraPlugins: 'mathjax,uploadimage,image2',
+                        mathJaxLib: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML',
+                        height: 320,
+                        // Upload images to a CKFinder connector (note that the response type is set to JSON).
+                        uploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files&responseType=json',
+
+                        // Configure your file manager integration. This example uses CKFinder 3 for PHP.
+                        filebrowserBrowseUrl: '/ckeditor/browse/',
+                        filebrowserImageBrowseUrl: '/ckeditor/browse/',
+                        filebrowserUploadUrl: '/ckeditor/upload/',
+                        filebrowserImageUploadUrl: '/ckeditor/upload/',
+
+                        // The following options are not necessary and are used here for presentation purposes only.
+                        // They configure the Styles drop-down list and widgets to use classes.
+
+                        stylesSet: [
+                            { name: 'Narrow image', type: 'widget', widget: 'image', attributes: { 'class': 'image-narrow' } },
+                            { name: 'Wide image', type: 'widget', widget: 'image', attributes: { 'class': 'image-wide' } }
+                        ],
+
+                        // Load the default contents.css file plus customizations for this sample.
+                        contentsCss: [ CKEDITOR.basePath + 'contents.css', 'https://sdk.ckeditor.com/samples/assets/css/widgetstyles.css' ],
+
+                        // Configure the Enhanced Image plugin to use classes instead of styles and to disable the
+                        // resizer (because image size is controlled by widget styles or the image takes maximum
+                        // 100% of the editor width).
+                        image2_alignClasses: [ 'image-align-left', 'image-align-center', 'image-align-right' ],
+                        image2_disableResizer: true
+                    });
+
+                    if ( CKEDITOR.env.ie && CKEDITOR.env.version == 8 ) {
+                        document.getElementById( 'ie8-warning' ).className = 'tip alert';
+                    }
+                    // this part overrides "close" method in MagnificPopup object
+                    $.magnificPopup.instance.close = function () {
+
+                        if (!confirm("Are you sure?")) {
+                            return;
+                        }
+
+                        // "proto" variable holds MagnificPopup class prototype
+                        // The above change that we did to instance is not applied to the prototype,
+                        // which allows us to call parent method:
+                        $.magnificPopup.proto.close.call(this);
+                    };
+                    // you may override any method like so, just note that it's applied globally
+
+                }
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+
+    {% include 'cours/css.html' %}
+    {% block extra_link %}
+    {% endblock %}
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <title>{% block head_title %}{% endblock %}</title>
+</head>
+<body id="page-top" ng-app="homeschool">
+
+{% block extra_css %}
+{% endblock %}
+
+<!-- PAGE WRAP -->
+<div id="page-wrap">
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="pre-icon">
+            <div class="pre-item pre-item-1"></div>
+            <div class="pre-item pre-item-2"></div>
+            <div class="pre-item pre-item-3"></div>
+            <div class="pre-item pre-item-4"></div>
+        </div>
+    </div>
+    <!-- END / PRELOADER -->
+
+    {% include 'cours/navbar.html' %}
+
+    {% block contenu %}
+    {% endblock %}
+
+    {% include 'cours/footer.html' %}
+
+</div>
+<!-- END / PAGE WRAP -->
+
+{% include 'cours/js.html' %}
+
+{% block extra_javascript %}
+{% endblock %}
+
+{% block controllerAngular %}
+{% endblock %}
+
+</body>
+</html>

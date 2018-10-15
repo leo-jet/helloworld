@@ -1,0 +1,173 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+
+
+{% block head_title %}Entrance preparation | Devoir {% endblock %}
+
+{% block contenu %}
+ <!-- SUB BANNER -->
+    <section class="sub-banner sub-banner-course">
+        <div class="awe-static bg-sub-banner-course"></div>
+        <div class="container">
+            <div class="sub-banner-content">
+                <h2 class="text-center">{{ classe.nom }}</h2>
+            </div>
+        </div>
+    </section>
+    <!-- END / SUB BANNER -->
+
+
+    <!-- COURSE -->
+    <section class="course-top" ng-controller="course-learn">
+        <label name="classeID" id="{{ classe.idClass }}" hidden></label>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="tabs-page">
+                        <ul class="nav-tabs" role="tablist">
+                            <li class="active"><a href="#outline" role="tab" data-toggle="tab">Programme</a></li>
+                            <li><a href="#review" role="tab" data-toggle="tab">Devoirs</a></li>
+                            <li><a href="#student" role="tab" data-toggle="tab">Bilan</a></li>
+                            <li class="itemnew"><a href="#announcement" role="tab" data-toggle="tab">Annonces</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+
+                            <!-- OUTLINE -->
+                            <div class="tab-pane fade in active" id="outline">
+
+                                <!-- SECTION OUTLINE -->
+                                <div class="section-outline">
+                                    <ul class="section-list">
+                                        {% for chapitre in chapitres %}
+                                            <li style="cursor: pointer;" onclick="window.location.href='{% url 'apprendre-chapitre' chapitre.id %}'">
+                                                <div class="count"><span>{{ forloop.counter }}</span></div>
+                                                <div class="list-body">
+                                                    <i class="icon md-files"></i>
+                                                    {{ chapitre.titre }}
+                                                </div>
+                                                <a href="{% url 'apprendre-chapitre' chapitre.id %}" class="mc-btn-2 btn-style-2">{{ chapitre.dateDebut }}</a>
+                                            </li>
+
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <!-- END / SECTION OUTLINE -->
+                            </div>
+                            <!-- END / OUTLINE -->
+
+                            <!-- ANNOUNCEMENT -->
+                            <div class="tab-pane fade" id="announcement">
+                                <ul class="list-announcement">
+
+                                    <!-- LIST ITEM -->
+                                    <li ng-repeat="annonce in annonces">
+                                        <div class="list-body">
+                                            <i class="icon md-flag"></i>
+                                            <div class="list-content">
+                                                <h4 class="sm black bold">
+                                                    {$ annonce.titre $}
+                                                </h4>
+                                                <p>{$ annonce.annonce $}</p>
+                                                <div class="author">Par <a href="#">M. {$ annonce.auteur $}</a></div>
+                                                <em>{$ annonce.date $}</em>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- END / LIST ITEM -->
+
+                                </ul>
+                            </div>
+                            <!-- END / ANNOUNCEMENT -->
+
+                            <!-- REVIEW -->
+                            <div class="tab-pane fade" id="review">
+                                <div class="table-wrap">
+                                    <div class="table-head">
+                                        <div class="chapter">Chapitre</div>
+                                        <div class="essai">Essai</div>
+                                        <div class="duree">durée</div>
+                                        <div class="debut">Correction</div>
+                                        <div class="fin">Fin</div>
+                                    </div>
+                                    <div class="table-body">
+                                        <div class="table-item">
+                                            <div class="tbody">
+                                                {% for devoir in devoirs %}
+                                                    <div class="item"
+                                                         name="td_row"
+                                                         id="{{ devoir.id }}"
+                                                         onclick="window.location.href='{% url 'quiz-intro' devoir.quizz.idQuizz %}'"
+                                                         style="cursor: pointer;">
+                                                        <div class="chapter">{{ devoir.titre }} - Chapitre {{ devoir.chapitre.numero }}</div>
+                                                        <div class="essai">{{ devoir.nombreEssai }}</div>
+                                                        <div class="duree">{{ devoir.duree }}</div>
+                                                        <div class="debut">
+                                                            {% if devoir.correction %}
+                                                                Disponible
+                                                            {% else %}
+                                                                Pas disponible
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="fin">{{ devoir.dateFin }}</div>
+                                                    </div>
+                                                {% empty %}
+                                                    <div class="item" name="td_row"style="cursor: pointer;">
+                                                        <div class="chapter">Vous n'avez pas encore de devoirs dans ce cours</div>
+                                                        <div class="essai"></div>
+                                                        <div class="duree"></div>
+                                                        <div class="debut"></div>
+                                                        <div class="fin"></div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END / REVIEW -->
+                            <!-- STUDENT -->
+                            <div class="tab-pane fade" id="student">
+                                <ul class="dc-btn">
+                                    <li>
+                                        <button class="mc-btn-3 btn-style-1"
+                                                ng-click="clickAfficherBilanDevoir()">Bilan devoir</button>
+                                    </li>
+                                    <li>
+                                        <button class="mc-btn-3 btn-style-1"
+                                           ng-click="clickAfficherBilanChapitre()">Moyenne</button>
+                                    </li>
+                                </ul>
+                                <div ng-show="bilanDevoir">
+                                    <div class="form-question mc-select">
+                                        <select class="select" style="z-index: 10; opacity: 0;">
+                                            <option value=""
+                                                    ng-repeat="devoir in copiesParDevoir"
+                                                    ng-click="AfficherBilanEssaiDevoir($index)">
+                                                {$ devoir.devoirIntitule $}
+                                            </option>
+                                            <option value="">What is your special ?</option>
+                                        </select>
+                                    </div>
+                                    <div class="panel panel-default panel-body">
+                                        <canvas id="myChart" width="400" height="400"></canvas>
+                                    </div>
+                                </div>
+                                <div ng-show="bilanChapitre">
+                                    Bilan chapitre
+                                </div>
+                            </div>
+                            <!-- END / STUDENT -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END / COURSE TOP -->
+{% endblock %}
+
+
+{% block controllerAngular %}
+    <script src="{% static 'megacourse/js/course-learn.js' %}"></script>
+{% endblock %}

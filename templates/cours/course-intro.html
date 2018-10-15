@@ -1,0 +1,257 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+{% load tags %}
+
+{% block head_title %}Entrance preparation | Devoir {% endblock %}
+
+{% block contenu %}
+    <style>
+        .course_title {
+            font-size: 36px;
+            line-height: 41px;
+            color: white;
+        }
+        .textForSubBanner {
+            color: white;
+        }
+        .clp-lead__headline {
+            font-size: 21px;
+            line-height: 27px;
+        }
+        .bigslide {
+            background-image: url("{% static 'megacourse/images/bg/sub-banner-course.jpg' %}");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+    <!-- SUB BANNER -->
+    <section class="bigslide">
+        <div class="container">
+            <h2 class="course_title">{{ classe.nom }}</h2>
+            <p class="textForSubBanner"><strong>Groupe : </strong> {{ classe.groupe.nom }} </p>
+            <p class="textForSubBanner">
+            <div class="row">
+            <div class="col-md-4 textForSubBanner">
+                <strong>Date de début des inscriptions : </strong>
+                {{ classe.dateDebut|date:"d-m-Y" }}.
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-4 textForSubBanner">
+                <strong>Date de fin des inscriptions : </strong>
+                {{ classe.dateFin|date:"d-m-Y" }}.
+            </div>
+        </div>
+            </p>
+        </div>
+    </section>
+    <!-- END / SUB BANNER -->
+    <!-- COURSE -->
+    <section class="course-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="sidebar-course-intro">
+                        <div class="video-course-intro">
+                            <div>
+                                <img src="{{ classe.logo.url }}" alt="">
+                            </div>
+                            <div class="price">
+                                {{ classe.prix }} FCFA
+                            </div>
+                            {% if request.user.is_anonymous %}
+                                <a href="{% url 'login' %}" class="mc-btn btn-style-1">
+                                    S'inscrire au cours
+                                </a>
+                            {% else %}
+                                {% if request.user|est_enseignant %}
+                                    <button class="mc-btn btn-style-1 disabled" onclick="alert('Vous ne pouvez pas vous inscrire à un cours avec un compte enseignant.')">
+                                        S'inscrire au cours
+                                    </button>
+                                {% else %}
+                                    <form action="https://www.homeschool-developer.ga/paiement/finition/" method="POST" id="wecashup">{% csrf_token %}
+                                        <script async src="https://www.wecashup.com/library/MobileMoney.js" class="wecashup_button"
+                                                data-demo
+                                                data-sender-lang="en"
+                                                data-receiver-uid="QwfbFHilryWs2nqv98iXkxhj3dn1"
+                                                data-receiver-public-key="deXvKIHI5f7KhymCMlFNW9WUZUHjrAyuoqd6Uoo9BkYG"
+                                                data-sender-phonenumber="+237671234567"
+                                                data-transaction-sender-firstname="{{ request.user.first_name }}"
+                                                data-transaction-sender-lastname="{{ request.user.last_name }}"
+                                                data-transaction-parent-uid=""
+                                                data-transaction-receiver-currency="XAF"
+                                                data-transaction-receiver-total-amount="{{ classe.prix }}"
+                                                data-transaction-receiver-reference="XVT2VBF"
+                                                data-transaction-sender-reference="XVT2VBF"
+                                                data-transaction-method="pull"
+                                                data-image="https://pbs.twimg.com/profile_images/884711906786906112/f2ZU9nRD_400x400.jpg"
+                                                data-name="Homeschool"
+                                                data-cash="true"
+                                                data-telecom="true"
+                                                data-split="true"
+                                                configuration-id="3"
+                                                data-marketplace-mode="false"
+                                                data-product-1-name="Inscription de {{ request.user }} au cours {{ classe.idClass }}"
+                                                data-product-1-quantity="1"
+                                                data-product-1-unit-price="{{ classe.prix }}"
+                                                data-product-1-reference="XVT2VBF"
+                                                data-product-1-category="Billeterie"
+                                                data-product-1-description="France's in the Air"
+
+                                        >
+                                        </script>
+                                    </form>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="about-instructor">
+                            <h4 class="xsm black bold">Enseignant</h4>
+                            <ul>
+                                <li>
+                                    <div class="image-instructor text-center">
+                                        {% if classe.enseignant.user|masculin_enseignant %}
+                                            <img src="{%  static 'megacourse/images/man.png' %}" alt="">
+                                        {% else %}
+                                            <img src="{%  static 'megacourse/images/woman.jpeg' %}" alt="">
+                                        {% endif %}
+                                    </div>
+                                    <!--
+                                    <div class="info-instructor">
+                                        <cite class="sm black"><a href="#">{{ classe.enseignant.user.get_full_name }}</a></cite>
+                                        <a href="#"><i class="fa fa-star"></i></a>
+                                        <a href="#"><i class="fa fa-envelope"></i></a>
+                                        <a href="#"><i class="fa fa-check-square"></i></a>
+                                        <p>{{ classe.enseignant.situation }}</p>
+                                    </div>
+                                    -->
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="tabs-page">
+                        <ul class="nav-tabs" role="tablist">
+                            <li class="active"><a href="#introduction" role="tab" data-toggle="tab">Introduction</a></li>
+                            <li><a href="#programme" role="tab" data-toggle="tab">Programme</a></li>
+                            <li><a href="#travauxDiriges" role="tab" data-toggle="tab">Devoirs</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <!-- INTRODUCTION -->
+                            <div class="tab-pane fade in active" id="introduction">
+                                {{ classe.description|safe|escape }}
+                            </div>
+                            <!-- END / INTRODUCTION -->
+
+                            <!-- OUTLINE -->
+                            <div class="tab-pane fade" id="programme">
+
+                                <!-- SECTION OUTLINE -->
+                                <div class="section-outline">
+                                    <ul class="section-list">
+                                        {% for chapitre in chapitres %}
+                                            <li style="cursor: pointer;" >
+                                                <div class="count"><span>{{ forloop.counter }}</span></div>
+                                                <div class="list-body">
+                                                    <i class="icon md-files"></i>
+                                                    {{ chapitre.titre }}
+                                                </div>
+                                                <a href="#" class="mc-btn-2 btn-style-2">{{ chapitre.dateDebut }}</a>
+                                            </li>
+
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <!-- END / SECTION OUTLINE -->
+                            </div>
+
+
+                            <!-- REVIEW -->
+                            <div class="tab-pane fade in" id="travauxDiriges">
+                                <div class="table-wrap">
+                                    <div class="table-head">
+                                        <div class="chapter">Chapitre</div>
+                                        <div class="essai">Essai</div>
+                                        <div class="duree">durée</div>
+                                        <div class="debut">Debut</div>
+                                        <div class="fin">Fin</div>
+                                    </div>
+                                    <div class="table-body">
+                                        <div class="table-item">
+                                            <div class="tbody">
+                                                {% for devoir in devoirs %}
+                                                    <div class="item" name="td_row" id="{{ devoir.id }}" style="cursor: pointer;">
+                                                        <div class="chapter">{{ devoir.titre }}</div>
+                                                        <div class="essai">{{ devoir.nombreEssai }}</div>
+                                                        <div class="duree">{{ devoir.duree }}</div>
+                                                        <div class="debut">{{ devoir.dateDebut }}</div>
+                                                        <div class="fin">{{ devoir.dateFin }}</div>
+                                                    </div>
+                                                {% empty %}
+                                                    <div class="item" name="td_row" style="cursor: pointer;">
+                                                        <div class="chapter">Pas de devoir pour ce cours</div>
+                                                        <div class="essai"></div>
+                                                        <div class="duree"></div>
+                                                        <div class="debut"></div>
+                                                        <div class="fin"></div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END / REVIEW -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END / COURSE TOP -->
+{% endblock %}
+
+{% block extra_javascript %}
+    <script type="text/javascript">
+
+        $.each($('.table-wrap'), function() {
+            $(this)
+                .find('.table-item')
+                .children('.thead:not(.active)')
+                .next('.tbody').hide();
+            $(this)
+                .find('.table-item')
+                .delegate('.thead', 'click', function(evt) {
+                    evt.preventDefault();
+                    if ($(this).hasClass('active')==false) {
+                        $('.table-item')
+                            .find('.thead')
+                            .removeClass('active')
+                            .siblings('.tbody')
+                            .slideUp(200);
+                    }
+                    $(this)
+                        .toggleClass('active')
+                        .siblings('.tbody')
+                        .slideToggle(200);
+                });
+        });
+
+        $("button[name='inscription']").on('click', function () {
+            $.ajax({
+                url : '{% url 'inscription' %}',
+                type : 'GET',
+                data : {"classeID": $(this).attr("id")},
+                dataType : 'json',
+                success : function(response, statut){
+                    window.location.href = "{% url 'cours-learn' classe.idClass %}"
+                },
+
+                error : function(resultat, statut, erreur){
+                    console.log(resultat);
+                },
+            });
+        });
+
+    </script>
+{% endblock %}

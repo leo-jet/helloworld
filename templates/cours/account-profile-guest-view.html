@@ -1,0 +1,193 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}Entrance preparation | Devoir {% endblock %}
+
+{% block extra_link %}
+    <link rel="stylesheet" href="{% static 'bootstrapHelpers/dist/css/bootstrap-formhelpers.min.css' %}">
+{% endblock %}
+
+{% block contenu %}
+    <style>
+        .message-error {
+            color: #E93C4F !important;
+        }
+    </style>
+    {% if eleve %}
+    {% else %}
+    {% include 'cours/header_profile.html' %}
+    {% endif %}
+
+    <!-- CONTEN BAR -->
+    <section class="content-bar">
+        <div class="container">
+            <ul>
+                {% if eleve %}
+                    <li>
+                        <a href="{% url 'account_apprentissage' %}">
+                            <i class="icon md-book-1"></i>
+                            Mes cours
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'account_enseignement' %}">
+                            <i class="icon md-people"></i>
+                            Mes cours
+                        </a>
+                    </li>
+                {% endif %}
+                <li class="current">
+                    <a href="{% url 'account_profil_invite' %}">
+                        <i class="icon md-user-minus"></i>
+                        Information
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+   <!-- END / CONTENT BAR -->
+
+
+
+
+    <!-- PROFILE -->
+
+    <section class="profile" ng-controller="guest">
+        <div class="container">
+        {% if isField == false %}
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="alert alert-danger">
+                        Veillez remplir compléter vos information avant de continuer.
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+            <h3 class="md black">Profile</h3>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="avatar-acount">
+                        <div class="info-acount">
+                            {% if isField %}
+                                {% if eleve %}
+                                    <h3 class="md black">{{ eleve.nom }} {{ eleve.prenom }}</h3>
+                                <div class="profile-email-address">
+                                    <div class="profile-email">
+                                        <h5>Date de naissance : </h5>
+                                        <p>{{ eleve.dateNaissance }}</p>
+                                    </div>
+                                </div>
+                                <div class="profile-email-address">
+                                    <div class="profile-email">
+                                        <h5>Lieu de naissance : </h5>
+                                        <p>{{ eleve.lieuNaissance }}</p>
+                                    </div>
+                                </div>
+                                <div class="profile-email-address">
+                                    <div class="profile-email">
+                                        <h5>Sexe : </h5>
+                                        <p>{{ eleve.sexe }}</p>
+                                    </div>
+                                </div>
+                                <div class="profile-email-address">
+                                    <div class="profile-email">
+                                        <h5>Numero de téléphone : </h5>
+                                        <p>{{ eleve.telephone }}</p>
+                                    </div>
+                                </div>
+                                <div class="profile-email-address">
+                                    <div class="profile-email">
+                                        <h5>Niveau d'étude : </h5>
+                                        <p>{{ eleve.niveau }}</p>
+                                    </div>
+                                </div>
+                                <div class="profile-email-address">
+                                    <div class="profile-email">
+                                        <h5>Etablissement fréquenté : </h5>
+                                        <p>{{ eleve.etablissement }}</p>
+                                    </div>
+                                </div>
+                                <div class="profile-email-address">
+                                    <div class="profile-email">
+                                        <h5>Lieu de l'établissement fréquenté : </h5>
+                                        <p>{{ eleve.lieuEtablissement }}</p>
+                                    </div>
+                                </div>
+                                    {% if eleve.niveau == "Terminale" %}
+                                        <div class="profile-email-address">
+                                            <div class="profile-email">
+                                                <h5>Choix école 1 : </h5>
+                                                <p>{{ eleve.choix1 }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="profile-email-address">
+                                            <div class="profile-email">
+                                                <h5>Choix école 2 : </h5>
+                                                <p>{{ eleve.choix2 }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="profile-email-address">
+                                            <div class="profile-email">
+                                                <h5>Choix école 3 : </h5>
+                                                <p>{{ eleve.choix3 }}</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                   <h3 class="md black">{{ enseignant.nom }} {{ enseignant.prenom }}</h3>
+                                <div class="profile-email-address">
+                                    <div class="profile-email">
+                                        <h5>Date de naissance : </h5>
+                                        <p>{{ enseignant.dateNaissance }}</p>
+                                    </div>
+                                </div>
+                                <div class="profile-email-address">
+                                    <div class="profile-email">
+                                        <h5>Lieu de naissance : </h5>
+                                        <p>{{ enseignant.lieuNaissance }}</p>
+                                    </div>
+                                </div>
+                                <div class="profile-email-address">
+                                    <div class="profile-email">
+                                        <h5>Sexe : </h5>
+                                        <p>{{ enseignant.sexe }}</p>
+                                    </div>
+                                </div>
+                                <div class="profile-email-address">
+                                    <div class="profile-email">
+                                        <h5>Numero de téléphone : </h5>
+                                        <p>{{ enseignant.telephone }}</p>
+                                    </div>
+                                </div>
+                                <div class="profile-email-address">
+                                    <div class="profile-email">
+                                        <h5>Spécialité : </h5>
+                                        <p>{{ enseignant.specialite }}</p>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="panel panel-default panel-body">
+                                    <form name="editProfile" class="form-horizontal" method="post">
+                                        {% crispy form %}
+                                    </form>
+                                <button ng-click="formCheck()" class="btn btn-primary">Check Form</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END / PROFILE -->
+{% endblock %}
+
+{% block extra_javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+    <script src="{% static 'megacourse/js/account-profile-guest-view.js' %}"></script>
+    <script src="{% static 'bootstrapHelpers/dist/js/bootstrap-formhelpers.min.js' %}"></script>
+{% endblock %}
+

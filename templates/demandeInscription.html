@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block head_title %}Profile{% endblock %}
+
+{% block content %}
+    <div class="row">
+        {% for demande in mesDemandes %}
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-body box-profile">
+                        <img class="profile-user-img img-responsive img-circle" src="{% static 'img/user7-128x128.jpg' %}" alt="User profile picture">
+
+                        <h3 class="profile-username text-center">{{ demande.user.get_full_name }}</h3>
+
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item">
+                                <b>Etablissement </b> : {{ demande.etablissement }}
+                            </li>
+                            <li class="list-group-item">
+                                <b>Classe : </b> : {{ demande.dateNaissance }}
+                            </li>
+                        </ul>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a name="plus_infos" id="{{ demande.idEleve }}" class="btn btn-info btn-block"><b>Plus d'infos</b></a>
+                            </div>
+                            <div class="col-md-4">
+                                <a name="accepter" class="btn btn-success btn-block"><b>Accepter</b></a>
+                            </div>
+                            <div class="col-md-4">
+                                <a name="refuser" class="btn btn-danger btn-block"><b>Refuser</b></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-body box-profile">
+                        <img class="profile-user-img img-responsive img-circle" src="{% static 'img/user7-128x128.jpg' %}" alt="User profile picture">
+
+                        <h3 class="profile-username text-center">{{ demande.user.get_full_name }}</h3>
+
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item">
+                                <b>Etablissement </b> : {{ demande.etablissement }}
+                            </li>
+                            <li class="list-group-item">
+                                <b>Classe : </b> : {{ demande.dateNaissance }}
+                            </li>
+                        </ul>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a name="plus_infos" id="{{ demande.idEleve }}" class="btn btn-info btn-block"><b>Plus d'infos</b></a>
+                            </div>
+                            <div class="col-md-4">
+                                <a name="accepter" class="btn btn-success btn-block"><b>Accepter</b></a>
+                            </div>
+                            <div class="col-md-4">
+                                <a name="refuser" class="btn btn-danger btn-block"><b>Refuser</b></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-body box-profile">
+                        <img class="profile-user-img img-responsive img-circle" src="{% static 'img/user7-128x128.jpg' %}" alt="User profile picture">
+
+                        <h3 class="profile-username text-center">{{ demande.user.get_full_name }}</h3>
+
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item">
+                                <b>Etablissement </b> : {{ demande.etablissement }}
+                            </li>
+                            <li class="list-group-item">
+                                <b>Classe : </b> : {{ demande.dateNaissance }}
+                            </li>
+                        </ul>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a name="plus_infos" id="{{ demande.idEleve }}" class="btn btn-info btn-block"><b>Plus d'infos</b></a>
+                            </div>
+                            <div class="col-md-4">
+                                <a name="accepter" class="btn btn-success btn-block"><b>Accepter</b></a>
+                            </div>
+                            <div class="col-md-4">
+                                <a name="refuser" class="btn btn-danger btn-block"><b>Refuser</b></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-body box-profile">
+                        <img class="profile-user-img img-responsive img-circle" src="{% static 'img/user7-128x128.jpg' %}" alt="User profile picture">
+
+                        <h3 class="profile-username text-center">{{ demande.user.get_full_name }}</h3>
+
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item">
+                                <b>Etablissement </b> : {{ demande.etablissement }}
+                            </li>
+                            <li class="list-group-item">
+                                <b>Classe : </b> : {{ demande.dateNaissance }}
+                            </li>
+                        </ul>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a name="plus_infos" id="{{ demande.idEleve }}" class="btn btn-info btn-block"><b>Plus d'infos</b></a>
+                            </div>
+                            <div class="col-md-4">
+                                <a name="accepter" class="btn btn-success btn-block"><b>Accepter</b></a>
+                            </div>
+                            <div class="col-md-4">
+                                <a name="refuser" class="btn btn-danger btn-block"><b>Refuser</b></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="box box-primary">
+                    <div class="box-body box-profile">
+                        <img class="profile-user-img img-responsive img-circle" src="{% static 'img/user7-128x128.jpg' %}" alt="User profile picture">
+
+                        <h3 class="profile-username text-center">{{ demande.user.get_full_name }}</h3>
+
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item">
+                                <b>Etablissement </b> : {{ demande.etablissement }}
+                            </li>
+                            <li class="list-group-item">
+                                <b>Classe : </b> : {{ demande.dateNaissance }}
+                            </li>
+                        </ul>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a name="plus_infos" id="{{ demande.idEleve }}" class="btn btn-info btn-block"><b>Plus d'infos</b></a>
+                            </div>
+                            <div class="col-md-4">
+                                <a name="accepter" class="btn btn-success btn-block"><b>Accepter</b></a>
+                            </div>
+                            <div class="col-md-4">
+                                <a name="refuser" class="btn btn-danger btn-block"><b>Refuser</b></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>fgfdgfdgfdg
+        {% endfor %}
+    </div>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title" id="myModalLabel">Plus d'information</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel panel-info">
+                        <div class="panel-body">
+                            <ul class="list-group list-group-unbordered">
+                                <li class="list-group-item list-group-item-info text-center">
+                                    <h4>Information personnelle</h4>
+                                </li>
+                                <li class="list-group-item" id="nom">
+                                    <b>Nom </b> :
+                                </li>
+                                <li class="list-group-item" id="prenom">
+                                    <b>Prenom : </b> : Emmanuel
+                                </li>
+                                <li class="list-group-item" id="date">
+                                    <b>Date de naissance : </b> : 29 Mars 1989
+                                </li>
+                                <li class="list-group-item" id="lieu">
+                                    <b>Lieu de naissance : </b> : Yaoundé
+                                </li>
+                                <li class="list-group-item" id="sexe">
+                                    <b>Sexe : </b> Masculin
+                                </li>
+                                <li class="list-group-item list-group-item-info text-center">
+                                    <h4>Projet académique ou professionnelle</h4>
+                                </li>
+                                <li class="list-group-item">
+                                    <b>Concours souhaités </b> :
+                                    <ul>
+                                        <li id="choix1">
+                                            Ecole nationale supérieure polytechnique de Yaoundé
+                                        </li>
+                                        <li id="choix2">
+                                            Ecole de médécine
+                                        </li>
+                                        <li id="choix3">
+                                            Ecole de médécine
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="list-group-item list-group-item-info text-center">
+                                    <h4>Scolarité</h4>
+                                </li>
+                                <li class="list-group-item" id="etablissement">
+                                    <b>Etablissement </b> : Lycée de Biyem-Assi
+                                </li>
+                                <li class="list-group-item" id="lieuEtablissement">
+                                    <b>Lieu : </b> : Yaoundé quartier Biyem-Assi
+                                </li>
+                                <li class="list-group-item" id="niveau">
+                                    <b>Classe : </b> : Terminale C
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extraJavascript %}
+    <script>
+        $("a[name='plus_infos']").on("click", function () {
+            var data = {
+                "eleveID": $(this).attr("id"),
+            };
+            $.ajax({
+                url: "{% url 'eleve-information' %}",
+                type: "GET",
+                dataType: 'json',
+                data: data,
+                success: function(result){
+
+                    $("#nom").empty();
+                    $("#nom").append("<b> Nom : </b> "+result.eleve.nom);
+
+                    $("#prenom").empty();
+                    $("#prenom").append("<b> Prenom : </b> "+result.eleve.prenom);
+
+                    $("#date").empty();
+                    $("#date").append("<b> Date de naissance : </b> "+result.eleve.dateNaissance);
+
+                    $("#lieu").empty();
+                    $("#lieu").append("<b> Lieu de naissance : </b> "+result.eleve.LieuNaissance);
+
+                    $("#choix1").empty();
+                    $("#choix1").append("<b> Choix 1 : </b> "+result.eleve.choix1);
+
+                    $("#choix2").empty();
+                    $("#choix2").append("<b> Choix 2 : </b> "+result.eleve.choix2);
+
+                    $("#choix3").empty();
+                    $("#choix3").append("<b> Choix 3 : </b> "+result.eleve.choix3);
+
+                    $("#etablissement").empty();
+                    $("#etablissement").append("<b> Etablissement fréquenté : </b> "+result.eleve.etablissement);
+
+                    $("#lieuEtablissement").empty();
+                    $("#lieuEtablissement").append("<b> Lieu : </b>"+result.eleve.lieuEtablissement);
+
+                    $("#niveau").empty();
+                    $("#niveau").append("<b> Classe : </b>"+result.eleve.niveau);
+
+                    $("#myModal").modal();
+                },
+                error: function (result) {
+                    alert(result.responseText);
+                }
+            });
+        });
+    </script>
+{% endblock %}

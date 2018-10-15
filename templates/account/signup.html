@@ -1,0 +1,101 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block head_title %}S'enrégistrer{% endblock %}
+
+{#TODO:#}
+{#    * Vérifier les champs de texte en utilisant angular#}
+{#        - si l'adresse mail existe déjà DONE#}
+{#        - l'identifiant existe déjà DONE#}
+{#        - si les mots de pass sont différents DONE#}
+{#        - si le mot de pass est long de plus de 8 lettres, contient des lettres, des chiffres et des caractères spéciaux#}
+{#    * Changer le titre de la page DONE#}
+{#    * Modifier le CSS pour les help-blocks#}
+
+{% block contenu %}
+<!-- LOGIN -->
+    <section id="login-content" class="login-content" ng-controller="signup" name="myForm" novalidate>
+        <div class="awe-parallax bg-login-content"></div>
+        <div class="awe-overlay"></div>
+        <div class="container">
+            <div class="form-login">
+                <form id="signup_form" name="signup_form" method="post" action="{% url 'account_signup' %}"> {% csrf_token %}
+                    <h2 class="text-uppercase">S'enrégistrer</h2>
+                    <div class="form-email">
+                        <input
+                                ng-class="{'error': signup_form.email.$dirty && signup_form.email.$invalid || erreurMailExistant}"
+                                placeholder="Adresse mail"
+                                ng-model="email"
+                                name="email"
+                                type="email"
+                                required>
+                        <span ng-show="signup_form.email.$dirty && signup_form.email.$invalid">
+                            Adresse mail invalide
+                        </span>
+                        <span ng-show="erreurMailExistant">
+                            Cet mail existe déjà !
+                        </span>
+                    </div>
+                    <div class="form-email">
+                        <input
+                                ng-class="{'error': signup_form.username.$dirty && signup_form.username.$invalid || erreurIdentifiantExistant}"
+                                placeholder="Identifiant"
+                                ng-model="username"
+                                name="username"
+                                type="text"
+                                required>
+                        <span ng-show="signup_form.username.$dirty && signup_form.username.$invalid">
+                            Veillez entrer votre identifiant !
+                        </span>
+                        <span ng-show="erreurIdentifiantExistant">
+                            Ce identifiant existe déjà !
+                        </span>
+                    </div>
+                    <div class="form-password">
+                        <input
+                                placeholder="Mot de pass" ng-model="password1"
+                                ng-class="{'error': erreurPass}"
+                                ng-minlength="5"
+                                name="password1" type="password">
+
+                        <span ng-show="erreurPass">
+                            Les mots de pass sont différents
+                        </span>
+                    </div>
+                    <div class="form-password">
+                        <input placeholder="Confirmer votre mot de pass"
+                               ng-model="password2"
+                               ng-class="{'error': erreurPass}"
+                               ng-minlength="5"
+                               ng-change="validerMotDePass()"
+                               name="password2" type="password">
+                        <span ng-show="signup_form.password2.$invalid">
+                            Mot de pass trop court
+                        </span>
+                        <span ng-show="erreurPass">
+                            Les mots de pass sont différents
+                        </span>
+                    </div>
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    {% endif %}
+                </form>
+                <div class="form-submit-1">
+                    <button class="mc-btn btn-style-1" type="submit" ng-click="clickEnregistrer()">S'enrégistrer</button>
+                </div>
+                <div class="link">
+                    <a href="login.html">
+                        <i class="icon md-arrow-right"></i> Vous avez déjà un compte ? Connectez-vous !
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END / LOGIN -->
+{% endblock %}
+
+
+{% block controllerAngular %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+    <script src="{% static 'megacourse/js/signup.js' %}"></script>
+{% endblock %}

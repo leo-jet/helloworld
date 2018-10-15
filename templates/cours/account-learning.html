@@ -1,0 +1,74 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+
+{% block head_title %}Entrance preparation | Mes cours {% endblock %}
+
+{% block contenu %}
+
+    {% include 'cours/header_profile.html' %}
+
+    <!-- CONTEN BAR -->
+    <section class="content-bar">
+        <div class="container">
+            <ul>
+                <li class="current">
+                    <a href="{% url 'account_apprentissage' %}">
+                        <i class="icon md-book-1"></i>
+                        Mes cours
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'account_devoir' %}">
+                        <i class="icon md-shopping"></i>
+                        Mes devoirs
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'account_profil_invite' %}">
+                        <i class="icon md-user-minus"></i>
+                        Information
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+   <!-- END / CONTENT BAR -->
+
+
+    {{ hello }}
+
+    <!-- COURSE CONCERN -->
+    <section id="course-concern" class="course-concern">
+        <div class="container">
+            <div class="row">
+                {% for classe in mesclasses %}
+                    <div class="col-xs-6 col-sm-4 col-md-3">
+                        <div class="mc-learning-item mc-item mc-item-2">
+                            <div class="image-heading">
+                                <img src="{% static 'megacourse/images/biologie.jpg' %}" alt="">
+                            </div>
+                            <div class="meta-categories"><a href="#">{{ classe.enseignant.specialite }}</a></div>
+                            <div class="content-item">
+                                <div class="image-author">
+                                    <img src="{% static 'megacourse/images/intel.jpg' %}" alt="">
+                                </div>
+                                <h4><a href="course-intro.html">{{ classe.nom }}</a></h4>
+                                <div class="name-author">
+                                    By <a href="#">{{ classe.groupe.nom }}</a>
+                                </div>
+                            </div>
+                            <div class="ft-item">
+                                <a href="{% url 'cours-learn' classe.idClass %}" class="learnnow">Aller en cours <i class="far fa-play-circle"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="alert alert-info">
+                        Vous n'êtes encore inscrit(e) dans aucun cours. Parcourir la liste des cours <a href="{% url 'categories' %}">ici</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- END / COURSE CONCERN -->
+{% endblock %}

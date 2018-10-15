@@ -1,0 +1,477 @@
+{% extends 'cours/base_asignment.html' %}
+{% load staticfiles %}
+
+{% block head_title %}Entrance preparation | Envoyé un devoir{% endblock %}
+{% block extra_css %}
+    <style>
+        .myChrono {
+            position: fixed;
+            display: inline-block;
+            float: right;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .borderCase {
+            border-style: solid;
+            border-width: 2px;
+        }
+        .borderCase-success {
+            border-color: #00743a;
+        }
+        .borderCase-reponse {
+            border-color: #1957bb;
+        }
+
+        .propositionSelectionnee {
+            background-color: #ffe921;
+            cursor: pointer;
+        }
+        .propositionPasSelectionnee {
+            background-color: #fff69b;
+            cursor: pointer;
+        }
+
+        .my-disable{
+            pointer-events:none;
+        }
+
+        .propositionPasSelectionnee:hover {
+            background-color: #ffe921;
+            cursor: pointer;
+        }
+        .question_list:hover {
+            background-color: #d4d4d4;
+            cursor: pointer;
+        }
+        .proposition_div .checkbox {
+            padding-left: 20px; }
+        .proposition_div .checkbox label {
+            display: inline-block;
+            position: relative;
+            padding-left: 5px; }
+        .proposition_div .checkbox label::before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            width: 17px;
+            height: 17px;
+            left: 0;
+            margin-left: -20px;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            background-color: #fff;
+            -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+            -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+            transition: border 0.15s ease-in-out, color 0.15s ease-in-out; }
+        .proposition_div .checkbox label::after {
+            display: inline-block;
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: 0;
+            top: 0;
+            margin-left: -20px;
+            padding-left: 3px;
+            padding-top: 1px;
+            font-size: 11px;
+            color: #555555; }
+
+        .proposition_div .checkbox input[type="checkbox"] {
+            opacity: 0; }
+        .proposition_div .checkbox input[type="checkbox"]:focus + label::before {
+            outline: thin dotted;
+            outline: 5px auto -webkit-focus-ring-color;
+            outline-offset: -2px; }
+        .proposition_div .checkbox input[type="checkbox"]:checked + label::after {
+            font-family: 'FontAwesome';
+            content: "\f00c"; }
+        .proposition_div .checkbox input[type="checkbox"]:disabled + label {
+            opacity: 0.65; }
+        .proposition_div .checkbox input[type="checkbox"]:disabled + label::before {
+            background-color: #eeeeee;
+            cursor: not-allowed; }
+        .proposition_div .checkbox.checkbox-circle label::before {
+            border-radius: 50%; }
+        .proposition_div .checkbox.checkbox-inline {
+            margin-top: 0; }
+
+        .proposition_div .checkbox-primary input[type="checkbox"]:checked + label::before {
+            background-color: #428bca;
+            border-color: #428bca; }
+        .proposition_div .checkbox-primary input[type="checkbox"]:checked + label::after {
+            color: #fff; }
+
+        .proposition_div .checkbox-danger input[type="checkbox"]:checked + label::before {
+            background-color: #d9534f;
+            border-color: #d9534f; }
+        .proposition_div .checkbox-danger input[type="checkbox"]:checked + label::after {
+            color: #fff; }
+
+        .proposition_div .checkbox-info input[type="checkbox"]:checked + label::before {
+            background-color: #5bc0de;
+            border-color: #5bc0de; }
+        .proposition_div .checkbox-info input[type="checkbox"]:checked + label::after {
+            color: #fff; }
+
+        .proposition_div .checkbox-success input[type="checkbox"]:checked + label::before {
+            background-color: #5cb85c;
+            border-color: #5cb85c; }
+        .proposition_div .checkbox-success input[type="checkbox"]:checked + label::after {
+            color: #fff; }
+
+        .proposition_div .radio {
+            padding-left: 20px; }
+        .proposition_div .radio label {
+            display: inline-block;
+            position: relative;
+            padding-left: 5px; }
+        .proposition_div .radio label::before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            width: 17px;
+            height: 17px;
+            left: 0;
+            margin-left: -20px;
+            border: 1px solid #cccccc;
+            border-radius: 50%;
+            background-color: #fff;
+            -webkit-transition: border 0.15s ease-in-out;
+            -o-transition: border 0.15s ease-in-out;
+            transition: border 0.15s ease-in-out; }
+        .proposition_div .radio label::after {
+            display: inline-block;
+            position: absolute;
+            content: " ";
+            width: 11px;
+            height: 11px;
+            left: 3px;
+            top: 3px;
+            margin-left: -20px;
+            border-radius: 50%;
+            background-color: #555555;
+            -webkit-transform: scale(0, 0);
+            -ms-transform: scale(0, 0);
+            -o-transform: scale(0, 0);
+            transform: scale(0, 0);
+            -webkit-transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            -moz-transition: -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            -o-transition: -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33); }
+        .proposition_div .radio input[type="radio"] {
+            opacity: 0; }
+        .proposition_div .radio input[type="radio"]:focus + label::before {
+            outline: thin dotted;
+            outline: 5px auto -webkit-focus-ring-color;
+            outline-offset: -2px; }
+        .proposition_div .radio input[type="radio"]:checked + label::after {
+            -webkit-transform: scale(1, 1);
+            -ms-transform: scale(1, 1);
+            -o-transform: scale(1, 1);
+            transform: scale(1, 1); }
+        .proposition_div .radio input[type="radio"]:disabled + label {
+            opacity: 0.65; }
+        .proposition_div .radio input[type="radio"]:disabled + label::before {
+            cursor: not-allowed; }
+        .proposition_div .radio.radio-inline {
+            margin-top: 0; }
+
+        .proposition_div .proposition_div .radio-primary input[type="radio"] + label::after {
+            background-color: #428bca; }
+        .proposition_div .radio-primary input[type="radio"]:checked + label::before {
+            border-color: #428bca; }
+        .proposition_div .radio-primary input[type="radio"]:checked + label::after {
+            background-color: #428bca; }
+
+        .proposition_div .radio-danger input[type="radio"] + label::after {
+            background-color: #d9534f; }
+        .proposition_div .radio-danger input[type="radio"]:checked + label::before {
+            border-color: #d9534f; }
+        .proposition_div .radio-danger input[type="radio"]:checked + label::after {
+            background-color: #d9534f; }
+
+
+        .proposition_div .radio-success input[type="radio"] + label::after {
+            background-color: #5cb85c; }
+        .proposition_div .radio-success input[type="radio"]:checked + label::before {
+            border-color: #5cb85c; }
+        .proposition_div .radio-success input[type="radio"]:checked + label::after {
+            background-color: #5cb85c; }
+        hr.style { border: 0; height: 4px; background: black;  }
+    </style>
+{% endblock %}
+{% block contenu %}
+    <section id="quizz-intro-section" class="quizz-intro-section learn-section" ng-controller="quizz">
+        <label name="idQuizz" id="{{ devoir.quizz.idQuizz }}" hidden></label>
+        <label name="idFeuilleEleve" id="{{ idFeuilleEleve }}" hidden></label>
+        <label name="correction" id="{{ devoir.correction }}" hidden></label>
+        <label name="duree" id="{{ devoir.duree }}" hidden></label>
+        <label name="limite" id="{{ limite }}" hidden></label>
+        <label name="classeConfiguration" id="{{ classe.idClass }}" hidden></label>
+        <label name="devoirID" id="{{ devoir.id }}" hidden></label>
+        <div class="container">
+            <div class="title-ct">
+                <h3><strong>Devoir - </strong>Biochimie générale</h3>
+                <div class="tt-right">
+                    <a href="#" class="skip"><i class="icon md-arrow-right"></i>Passer le devoir</a>
+                </div>
+            </div>
+
+            <div class="question-content-wrap">
+                <div class="row">
+                    <div class="col-md-8" ng-class="{ 'my-disable': fin==true}">
+                        <div class="question-content">
+                            <h4 class="sm">Enoncé</h4>
+                            <div ng-if="question.type=='ci' || question.type=='qru' || question.type=='qcm'" class="proposition_div">
+                                    <div class="panel panel-default panel-body"
+                                         mathjax
+                                         ng-bind-html="question.enonce"
+                                        style="border-style: solid;border-width: 3px;">
+                                    </div>
+                                </div>
+                            <div class="panel panel-default panel-body" ng-if="question.type=='qcr' || question.type=='qr' " class="proposition_div"
+                                 style="border-style: solid;border-width: 3px;">
+                                <div
+                                         mathjax
+                                         ng-bind-html="question.enonce">
+                                </div>
+                                <div ng-repeat="enonceB in question.enonceBListe">
+                                    <div class="col-md-4">
+                                        <div class="panel panel-default panel-body borderCase"
+                                             ng-click="selectionnerProposition(enonceB)"
+                                             ng-class="{ 'propositionSelectionnee': enonceB==propositionRelationlleSelectionnee,
+                                             'my-disable': fin==true,
+                                             'propositionPasSelectionnee': enonceB!=propositionRelationlleSelectionnee}"
+                                             mathjax
+                                             ng-bind-html="enonceB">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default panel-body" ng-if="question.type=='schema'" class="proposition_div"
+                                 style="border-style: solid;border-width: 3px;">
+                                <div
+                                         mathjax ng-bind-html="question.enonce">
+                                </div>
+                                <div ng-repeat="annotation in question.annotationListe">
+                                    <div class="col-md-4">
+                                        <div class="panel panel-default panel-body borderCase"
+                                             ng-click="selectionnerAnnotation(annotation)"
+                                             ng-class="{ 'propositionSelectionnee': annotation==propositionAnnotationSelectionnee,
+                                             'my-disable': fin==true,
+                                             'propositionPasSelectionnee': annotation!=propositionAnnotationSelectionnee,
+                                             }"
+                                             mathjax
+                                             ng-bind-html="annotation">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="answer">
+                                <h4 class="sm">Propositions</h4>
+                                <div
+                                        ng-if="question.type=='qcm'"
+                                        style="border-style: solid;border-width: 3px;"
+                                        class="panel panel-default panel-body proposition_div" >
+                                    <div ng-repeat="proposition in question.propositions">
+                                        <div
+
+                                                ng-class="{ 'borderCase-success': proposition.solution==true && corriger==true,
+                                             }"
+                                                class="panel panel-default panel-body borderCase">
+                                            <div
+                                                    class="checkbox checkbox-primary"
+                                                ng-class="{ 'my-disable': fin==true}">
+                                                <input
+                                                        id="proposition{$ proposition.id $}"
+                                                        ng-model="proposition.checked"
+                                                        type="checkbox">
+                                                <label
+                                                        for="proposition{$ proposition.id $}"
+                                                        mathjax
+                                                        ng-bind-html="proposition.enonce">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                        ng-if="question.type=='ci' || question.type=='qru'"
+                                        style="border-style: solid;border-width: 3px;"
+                                        class="panel panel-default panel-body proposition_div">
+                                    <div ng-repeat="proposition in question.propositions">
+                                        <div class="panel panel-default panel-body borderCase"
+                                             ng-class="{ 'borderCase-success': proposition.solution==true && corriger==true,
+                                             }">
+                                            <div class="radio radio-primary"
+                                                 ng-click="clickButtonRadio(proposition)">
+                                                <input
+                                                        id="proposition{$ proposition.id $}"
+                                                        name="radio"
+                                                        ng-checked="proposition.checked"
+                                                        type="radio">
+                                                <label
+                                                        for="proposition{$ proposition.id $}"
+                                                        mathjax
+                                                        ng-bind-html="proposition.enonce">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                        class="panel panel-default panel-body"
+                                        ng-if="question.type=='qcr' || question.type=='qr'"
+                                        class="panel panel-default panel-body proposition_div"
+                                        style="border-style: solid;border-width: 3px;">
+                                    <div class="row" ng-repeat="proposition in question.propositions">
+                                        <div class="col-md-4">
+                                            <div    class="panel panel-default panel-body borderCase"
+                                                    mathjax
+                                                    ng-bind-html="proposition.enonceA">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" ng-show="fin==false || corriger==false">
+                                            <hr class="style">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="panel panel-default panel-body borderCase borderCase-reponse"
+                                                 mathjax
+                                                 ng-bind-html="proposition.reponse">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" ng-show="fin==true && corriger==true">
+                                            <div class="panel panel-default panel-body borderCase borderCase-success"
+                                                 mathjax
+                                                 ng-bind-html="proposition.enonceB">
+                                            </div>
+                                        </div>
+                                        <div
+                                                class="col-md-2 panel-body"
+                                                style="cursor: pointer"
+                                                 ng-show="fin==false || corriger==false"
+                                                ng-if="proposition.reponse!='-'"
+                                                ng-click="clickDeselectionnerPropositionRelationnelle(proposition)">
+                                            <span class="label label-warning">changer</span>
+                                        </div>
+                                        <div
+                                                ng-show="fin==false || corriger==false"
+                                                class="col-md-2 panel-body"
+                                                ng-if="proposition.reponse=='-'"
+                                                style="cursor: pointer"
+                                                ng-click="clickChoisirPropositionRelationnelle(proposition)">
+                                            <span class="label label-success">choisir</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="panel panel-default panel-body"
+                                     ng-if="question.type=='schema'"
+                                     class="panel panel-default panel-body proposition_div"
+                                     style="border-style: solid;border-width: 3px;">
+                                    <div ng-repeat="proposition in question.propositions" class="row">
+                                        <div class="col-md-2">
+                                            <div class="panel panel-default panel-body borderCase"
+                                                 mathjax
+                                                 ng-bind-html="proposition.numero">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" ng-show="fin==false || corriger==false">
+                                            <hr class="style">
+                                        </div>
+                                        <div ng-class="{ 'col-md-6': fin==false, 'col-md-5': fin==true}">
+                                            <div class="panel panel-default panel-body borderCase borderCase-reponse"
+                                                 mathjax
+                                                 ng-bind-html="proposition.reponse">
+                                            </div>
+                                        </div>
+                                        <div
+                                                ng-show="fin==true && corriger==true"
+                                                class="col-md-5">
+                                            <div class="panel panel-default panel-body borderCase-success"
+                                                 mathjax
+                                                 ng-bind-html="proposition.annotation">
+                                            </div>
+                                        </div>
+                                        <div
+                                                class="col-md-2 panel-body"
+                                                style="cursor: pointer"
+                                                 ng-show="fin==false || corriger==false"
+                                                ng-if="proposition.reponse!='-'"
+                                                ng-click="clickDeselectionnerAnnotation(proposition)">
+                                            <span class="label label-warning">changer</span>
+                                        </div>
+                                        <div
+                                                class="col-md-2 panel-body"
+                                                ng-if="proposition.reponse=='-'"
+                                                 ng-show="fin==false || corriger==false"
+                                                style="cursor: pointer"
+                                                ng-click="clickChoisirAnnotation(proposition)">
+                                            <span class="label label-success">choisir</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#" class="mc-btn btn-style-6" ng-click="clickValider(question)" >Valider</a>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <aside class="question-sidebar">
+                            <div class="score-sb" style="overflow: scroll">
+                                <div class="alert alert-info text-center"
+                                     ng-show="fin==true && corriger==true">
+                                    <strong>Résultat : {$ calculerScore() $}</strong>
+                                </div>
+                                <div class="list-group">
+                                    <a class="list-group-item text-center active" data-remote="true" href="#" id="categoria_0">
+                                        Questions
+                                    </a>
+                                    <div ng-repeat="(key, partie) in questionsParties">
+                                        <a
+                                                class="list-group-item"
+                                                href="#questions{$ partie.partie $}"
+                                                id="categoria_4{$ partie.partie $}"
+                                                data-parent="#questions{$ partie.partie $}"
+                                                style="padding-left: 25px;pointer-events: none;">
+                                            <span style="margin-left: 10px;font-size:20px; font-weight: bold;">
+                                                Partie {$ partie.partie $}
+                                                <span class="label label-warning" ng-show="fin==true && corriger==true">
+                                                    {$ compterPoints(partie) $} {$ partie.points $} / {$ partie.total $}
+                                                </span>
+                                            </span>
+                                        </a>
+
+                                        <div class="list-group-submenu" id="questions{$ partie.partie $}" style="font-size:16px; font-weight: bold;">
+                                            <a
+                                                    name="question"
+                                                    ng-repeat="(key1, questionThis) in partie.questions"
+                                                    id="{$ key $}" ng-click="changerQuestion(questionThis.idQuestion)"
+                                                    href="#" class="list-group-item sub-item"
+                                                    data-parent="#questions{$ partie.partie $}"
+                                                    style="padding-left: 78px;">
+                                                Question {$ key1 + 1 $}
+                                                <span class="label label-info" ng-show="questionThis.fait">Fait</span>
+                                                <span class="label label-primary" ng-show="fin==true && corriger==true">
+                                                    {$ questionThis.points $} / {$ questionThis.total $}
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="submit" value="Envoyer ses réponses" class="submit mc-btn btn-style-1" ng-click="clickArreter()">
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_javascript %}
+    <script src="{% static 'js/jquery.time-to.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'megacourse/js/quizz-demo.js' %}"></script>
+{% endblock %}

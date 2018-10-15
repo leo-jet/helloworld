@@ -1,0 +1,91 @@
+{% load staticfiles %}
+{% load tags %}
+
+{#TODO#}
+{#    - Ajouter une fonction de recherche de cours uniquement #}
+
+<!-- HEADER -->
+<header id="header" class="header">
+    <div class="container">
+
+        <!-- LOGO -->
+        <div class="logo"><a href="index.html"><img src="images/logo.png" alt=""></a></div>
+        <!-- END / LOGO -->
+
+        <!-- NAVIGATION -->
+        <nav class="navigation">
+
+            <div class="open-menu">
+                <span class="item item-1"></span>
+                <span class="item item-2"></span>
+                <span class="item item-3"></span>
+            </div>
+
+            <!-- MENU -->
+            <ul class="menu">
+                <li class="current-menu-item"><a href="{% url 'home' %}">Accueil</a></li>
+                <li><a href="{% url 'categories' %}">Les cours</a></li>
+                <li><a href="{% url 'posts:list' %}">Blog</a></li>
+                {% if request.user.is_anonymous %}
+                    <li class="menu-item-has-children">
+                        <a href="#">Connexion</a>
+                        <ul class="sub-menu">
+                            <li><a href="{% url 'account_login' %}">Se connecter</a></li>
+                            <li><a href="{% url 'account_signup' %}">S'enrégistrer</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+
+            </ul>
+            <!-- END / MENU -->
+
+            <!-- SEARCH BOX -->
+            <div class="search-box">
+                <i class="icon md-search"></i>
+                <div class="search-inner">
+                    <form>
+                        <input type="text" placeholder="key words">
+                    </form>
+                </div>
+            </div>
+            <!-- END / SEARCH BOX -->
+
+            {% if request.user.is_anonymous == False %}
+                <ul class="list-account-info">
+
+
+                    <li class="list-item account">
+                        <div class="account-info item-click">
+                            {% if request.user|masculin_enseignant %}
+                                <img src="{%  static 'megacourse/images/man.png' %}" alt="">
+                            {% else %}
+                                <img src="{%  static 'megacourse/images/woman.jpeg' %}" alt="">
+                            {% endif %}
+                        </div>
+                        <div class="toggle-account toggle-list">
+                            <ul class="list-account">
+                                {% if request.user|est_enseignant  %}
+                                    <li><a href="{% url 'account_enseignement' %}"><i class="icon md-book-1"></i>Mes cours</a></li>
+                                {% else %}
+                                    <li><a href="{% url 'account_apprentissage' %}"><i class="icon md-book-1"></i>Mes cours</a></li>
+                                    <li><a href="{% url 'account_devoir' %}"><i class="icon md-shopping"></i>Mes devoirs</a></li>
+                                {% endif %}
+                                <li><a href="{% url 'account_profil_invite' %}"><i class="icon md-user-minus"></i>Information</a></li>
+                                <li><a href="{% url 'account_logout' %}"><i class="icon md-arrow-right"></i>Se déconnecter</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+
+                </ul>
+                <!-- END / LIST ACCOUNT INFO -->
+            {% endif %}
+            <!-- LIST ACCOUNT INFO -->
+
+        </nav>
+        <!-- END / NAVIGATION -->
+
+    </div>
+</header>
+<!-- END / HEADER -->
+

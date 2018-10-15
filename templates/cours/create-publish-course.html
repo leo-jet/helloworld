@@ -1,0 +1,124 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block head_title %}Entrance preparation | Devoir {% endblock %}
+
+{% block contenu %}
+
+    <!-- CREATE COURSE CONTENT -->
+    <section id="create-course-section" class="create-course-section">
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3">
+                        <div class="create-course-sidebar">
+                            <ul class="list-bar">
+                                <li><span class="count">1</span>Information Basique</li>
+                                <li><span class="count">2</span>Chapitres</li>
+                                <li><span class="count">3</span>Devoirs</li>
+                                <li class="active"><span class="count">4</span>Publier le cours</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                <div class="col-md-9">
+                    <div class="create-course-content">
+
+                        <!-- PUBLISH COURSE -->
+                        <div class="publish-course">
+                            <h3 class="md black">Recapitulatif du cours</h3>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="mc-item mc-item-1">
+                                        <div class="image-heading">
+                                            <img src="{{ classe.logo.url }}" alt="">
+                                        </div>
+                                        <div class="meta-categories"><a href="#">{{ classe.matiere }}</a></div>
+                                        <div class="content-item">
+                                            <div class="image-author">
+                                                <img src="{{ classe.logo.url }}" alt="">
+                                            </div>
+                                            <div class="name-author">
+                                                By <a href="#">{{ classe.groupe.nom }}</a>
+                                            </div>
+                                        </div>
+                                        <div class="ft-item">
+                                            <div class="price">
+                                                {{ classe.prix }} FCFA
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-7">
+                                    <h2 class="big black">{{ classe.nom }}</h2>
+
+                                    <div class="new-course">
+                                        <div class="item course-code">
+                                            <i class="icon md-img-check"></i>
+                                            <h4><a href="#">Ouverture</a></h4>
+                                            <p class="detail-course">{{ classe.dateDebut|date:"Y-m-d" }}</p>
+                                        </div>
+                                        <div class="item course-code">
+                                            <i class="icon md-img-check"></i>
+                                            <h4><a href="#">Inscription</a></h4>
+                                            <p class="detail-course">{{ classe.dateFinInscription|date:"Y-m-d" }}</p>
+                                        </div>
+                                    </div>
+
+                                    <hr class="line">
+                                    <div class="current-wrapper">
+                                        <h4 class="xsm black">Description</h4>
+                                        {{ classe.description|safe }}
+                                    </div>
+                                    <hr class="line">
+
+                                    <div class="about-instructor">
+                                        <h4 class="xsm black">Enseignant</h4>
+                                        <ul>
+                                            <li>
+                                                <div class="info-instructor">
+                                                    <cite class="sm black"><a href="#">{{ classe.enseignant.nom }} {{ classe.enseignant.prenom }}</a></cite>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <hr class="line">
+
+                                    <div class="current-wrapper">
+                                        <h4 class="xsm black">Synthèse</h4>
+                                        <ul class="current-outline">
+                                            <li><span>{{ nombreChapitres }}</span>Chapitres</li>
+                                            <li><span>{{ nombreTDs }}</span>Devoirs</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END / PUBLISH COURSE -->
+
+                        <div class="form-action confirm-save">
+                            <input type="submit" id="publier" value="Confirmer et publier" class="submit mc-btn-3 btn-style-1">
+                            <input type="submit" value="Enrégistrer un brouillon" class="submit mc-btn-3 btn-style-6">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END / CREATE COURSE CONTENT -->
+    <div>
+        <div hidden>
+            {% csrf_token %}
+            {% crispy form %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_javascript %}
+<script>
+    $("#publier").on("click", function () {
+        $("#select_chapitre").submit();
+    });
+</script>
+{% endblock %}

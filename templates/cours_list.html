@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block head_title %}Profile{% endblock %}
+
+{% block extraStyle %}
+{% endblock %}
+
+{% block content %}
+    <div ng-controller="quizz">
+        <div class="row">
+            <fieldset class="group">
+                <legend>TYPE DE COURS</legend>
+                <label ng-repeat=" filter in filtered_cours_list">
+                    <input type="checkbox" ng-model="active" ng-change="filterChanged(filter, active)" />
+                    {$ filter.name $}
+                </label>
+            </fieldset>
+        </div>
+        <div class="row" name="cours_list">
+            <div ng-repeat="cours in list_cours_filtered" class="col-md-6">
+                <div class="box box-warning" name="box">
+                    <div class="box-body box-profile" name="box-body">
+                        <h3 class="profile-username text-center">{$ cours.nom $}</h3>
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item"><strong>Groupe : </strong> {$ cours.groupe.etablissement_ptr.nom $}</li>
+                            <li class="list-group-item"><strong>Prix : </strong> {$ cours.prix $}</li>
+                            <li class="list-group-item"><strong>Matière : </strong> {$ cours.enseignant.specialite $}</li>
+                            <li class="list-group-item"><strong>Date de début des cours : </strong> {$ cours.dateDebut | date:'MM-dd-yyyy à hh:mm'$}</li>
+                            <li class="list-group-item"><strong>Date de fin des cours : </strong> {$ cours.dateFin | date:'MM-dd-yyyy à hh:mm'$}</li>
+                            <li class="list-group-item"><strong>Date de fin d'inscription : </strong> {$ cours.dateFinInscription | date:'MM-dd-yyyy à HH:mm'$}</li>
+                        </ul>
+                        <div class="col-md-6">
+                            <a name="plus_infos" class="btn btn-info btn-block" ng-click="info_cours(cours)"><b>Plus d'infos</b></a>
+                        </div>
+                        <div class="col-md-6">
+                            {% if request.user|is_registered_in_classe:classe %}
+                                <a href="#" class="btn btn-danger btn-block"><b>Se désinscrire</b></a>
+                            {% else %}
+                                <a name="inscription" class="btn btn-success btn-block"><b>S'incrire</b></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="text-center" id="myModalLabel">Plus d'information</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="panel panel-info">
+                            <div class="panel-body">
+                                <ul class="list-group list-group-unbordered">
+                                    <li class="list-group-item list-group-item-info text-center">
+                                        <h4>Programme du cours</h4>
+                                    </li>
+                                    <li class="list-group-item" ng-repeat="chapitre in cours_actuel.chapitres">
+                                        <b>{$ chapitre.intitule $}</b>
+                                    </li>
+                                    <li class="list-group-item list-group-item-info text-center">
+                                        <h4>Description du cours</h4>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <ul>
+                                            <li id="choix1">
+                                                {$ cours_actuel.description $}
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="list-group-item list-group-item-info text-center">
+                                        <h4>Enseignants</h4>
+                                    </li>
+                                    <li class="list-group-item" id="etablissement">
+                                        <ul>
+                                            <li id="choix1">
+                                                Nom : {$ cours_actuel.enseignant.nom $}
+                                            </li>
+                                            <li id="choix2">
+                                                Prénom : {$ cours_actuel.enseignant.prenom $}
+                                            </li>
+                                            <li id="choix2">
+                                                Situation : {$ cours_actuel.enseignant.situation $}
+                                            </li>
+                                            <li id="choix2">
+                                                Email : {$ cours_actuel.enseignant.email $}
+                                            </li>
+                                            <li id="choix2">
+                                                Téléphone : {$ cours_actuel.enseignant.numero $}
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extraJavascript %}
+    <script>
+    var app = angular.module("homeschool", []);
+        app.config(function($interpolateProvider) {
+            $interpolateProvider.startSymbol('{$');
+            $interpolateProvider.endSymbol('$}');
+        });
+        app.controller('quizz', function($scope, $http, $location) {
+            $scope.filtered_cours_list = [
+                {'name':'BIOLOGIE' , 'value':"Cours de Biologie"},
+                {'name':'PHYSIQUES' , 'value':"Cours de Physiques"},
+                {'name':'CHIMIE' , 'value':"Cours Chimie"},
+                {'name':'CULTURE GENERALE' , 'value':"Cours de culture générale"},
+                {'name':'CULTURE MEDICALE' , 'value':"Cours de culture médicale"},
+                {'name':'LANGUE' , 'value':"Cours de langue"},
+            ];
+            $http({
+                method: 'GET',
+                url: "{% url 'classe-list' %}"
+            }).then(function successCallback(response) {
+                $scope.cours_list = response.data.cours_list;
+                $scope.list_cours_filtered = $scope.cours_list;
+            }, function errorCallback(response) {
+                alert(response.responseText);
+            });
+            $scope.info_cours = function (cours) {
+                $scope.cours_actuel = cours;
+                $("#myModal").modal();
+            };
+
+            $scope.list_filter_cours = [];
+            $scope.filterChanged = function (matiere, active) {
+                if (active)
+                    $scope.list_filter_cours.push(matiere);
+                else
+                    $scope.list_filter_cours.splice($scope.list_filter_cours.indexOf(matiere), 1);
+                $scope.list_cours_filtered = [];
+                angular.forEach($scope.list_filter_cours, function(value, key) {
+                    angular.forEach($scope.cours_list, function(cours, key_cours) {
+                        if(value.name==cours.enseignant.specialite){
+                            $scope.list_cours_filtered.push(cours);
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+    <script>
+        $("a[name='inscription']").on("click", function () {
+            var data = {
+                "classeID": $(this).attr("id"),
+            };
+            $.ajax({
+                url: "{% url 'demande-inscription' %}",
+                type: "GET",
+                dataType: 'json',
+                data: data,
+                success: function(result){
+                    alert("succès");
+                },
+                error: function (result) {
+                    alert(result.responseText);
+                }
+            });
+        });
+        $("a[name='plus_infos']").on("click", function () {
+            $("#myModal").modal();
+        });
+    </script>
+{% endblock %}

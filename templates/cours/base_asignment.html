@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <!-- Google font -->
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:300,400,700,900' rel='stylesheet' type='text/css'>
+
+    {% include 'cours/css.html' %}
+
+    <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <title>{% block head_title %}{% endblock %}</title>
+</head>
+<body id="page-top" ng-app="homeschool">
+{% block extra_css %}
+
+{% endblock %}
+<!-- PAGE WRAP -->
+<div id="page-wrap">
+
+    {% include 'cours/assignment_top.html' %}
+
+    {% block contenu %}{% endblock %}
+
+</div>
+<!-- END / PAGE WRAP -->
+
+{% include 'cours/js.html' %}
+
+{% block extra_javascript %}{% endblock %}
+</body>
+</html>

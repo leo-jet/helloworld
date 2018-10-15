@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load tags %}
+{% load crispy_forms_tags %}
+
+{% block extraCSS %}
+    <link href="{% static 'css/icheck/icheck-bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/timeTo.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block extraStyle %}
+    <style>
+        .badge {
+            padding: 1px 9px 2px;
+            font-size: 12.025px;
+            font-weight: bold;
+            white-space: nowrap;
+            color: #ffffff;
+            background-color: #999999;
+            -webkit-border-radius: 9px;
+            -moz-border-radius: 9px;
+            border-radius: 9px;
+        }
+        .badge:hover {
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .badge-error {
+            background-color: #b94a48;
+        }
+        .badge-error:hover {
+            background-color: #953b39;
+        }
+        .badge-warning {
+            background-color: #f89406;
+        }
+        .badge-warning:hover {
+            background-color: #c67605;
+        }
+        .badge-success {
+            background-color: #468847;
+        }
+        .badge-success:hover {
+            background-color: #356635;
+        }
+        .badge-info {
+            background-color: #3a87ad;
+        }
+        .badge-info:hover {
+            background-color: #2d6987;
+        }
+        .badge-inverse {
+            background-color: #333333;
+        }
+        .badge-inverse:hover {
+            background-color: #1a1a1a;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div ng-controller="quizz" style="font-family: 'Times New Roman', Georgia, Serif; ">
+    qsdqsdqsdqsdqsd
+        <div name="questionnaire">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-success panel-body">
+                        <div class="col-lg-3" style="font-size:20px; font-weight: bold;  font-family: 'Times New Roman', Georgia, Serif; " math-jax-bind="name"></div>
+                        <div class="col-lg-3">
+                            <div id="countdown-1"></div>
+                        </div>
+                        <div class="col-lg-3"><a href="#" class="btn btn-danger" ng-click="clickArreter()">Enregistrer</a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="list-group">
+                        <a class="list-group-item text-center active" data-remote="true" href="#" id="categoria_0">
+                            Questions
+                        </a>
+                        <div ng-repeat="(key, partie) in questionsParties">
+                            <a class="list-group-item" data-remote="true" href="#questions{$ partie.partie $}" id="categoria_4{$ partie.partie $}" data-parent="#questions{$ partie.partie $}" style="padding-left: 25px;">
+                                <span style="margin-left: 10px;font-size:20px; font-weight: bold;">
+                                    {$ partie.partie $}
+                                    <span class="label label-warning" ng-if="fin">
+                                        {$ compterPoints(partie) $} {$ partie.note $} / {$ partie.total $}
+                                    </span>
+                                </span>
+                            </a>
+
+                            <div class="list-group-submenu" id="questions{$ partie.partie $}" style="font-size:16px; font-weight: bold;">
+                                <a name="question" ng-repeat="(key1, questionThis) in partie.questions" id="{$ key $}" ng-click="changerQuestion(questionThis.idQuestion)" href="#" class="list-group-item sub-item" data-parent="#questions{$ partie.partie $}" style="padding-left: 78px;">
+                                    Question {$ key1 $}
+                                    <span class="label label-info" ng-if="questionFait(questionThis)">Fait</span>
+                                    <span class="label label-success" ng-if="fin && corrigerQuestion(questionThis)">+1</span>
+                                    <span class="label label-danger" ng-if="fin && !corrigerQuestion(questionThis)">0</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <div class="col-md-8"  style="font-size:20px; font-family: 'Times New Roman', Georgia, Serif; ">
+                    <div class="panel panel-default" id="qcm">
+                        <div class="panel-heading" class="textEnonce" math-jax-bind="question.enonce"></div>
+                        <div class="panel-body">
+                            <div id="propositions" class="textEnonce">
+                                <div ng-repeat="(key1,proposition) in question.propositions" ng-if="question.choixMultiple" class="checkbox icheck-primary">
+                                    <input type="checkbox" id="proposition{$ proposition.idProposition $}" indexP="{$ key1 $}" ng-if="!proposition.checked" name="proposition" />
+                                    <input type="checkbox" id="proposition{$ proposition.idProposition $}" indexP="{$ key1 $}" ng-if="proposition.checked" checked name="proposition" />
+                                    <label for="proposition{$ proposition.idProposition $}" math-jax-bind="proposition.enonce"></label>
+                                    <i class="fa fa-check-circle" aria-hidden="true" style="color:red" ng-if="fin && proposition.checked && !proposition.solution"></i>
+                                    <i class="fa fa-check-circle" aria-hidden="true" style="color:forestgreen" ng-if="fin && proposition.solution"></i>
+                                </div>
+                                <div ng-repeat="(key1,proposition) in question.propositions" ng-if="!question.choixMultiple" class="radio icheck-primary">
+                                    <input type="radio" id="proposition{$ proposition.idProposition $}" indexP="{$ key1 $}" ng-if="!proposition.checked" name="proposition" />
+                                    <input type="radio" id="proposition{$ proposition.idProposition $}" indexP="{$ key1 $}" ng-if="proposition.checked" checked name="proposition" />
+                                    <label for="proposition{$ proposition.idProposition $}" math-jax-bind="proposition.enonce"></label>
+                                    <i class="fa fa-check-circle" aria-hidden="true" style="color:red" ng-if="fin && proposition.checked && !proposition.solution"></i>
+                                    <i class="fa fa-check-circle" aria-hidden="true" style="color:forestgreen" ng-if="fin && proposition.solution"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer">
+                            <button class="link-to btn btn-success" href="#" id="verifier" ng-click="clickValider(question)">Valider</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extraJavascript %}
+    <script src="{% static 'js/jquery.time-to.min.js' %}"></script>
+    <script>
+
+        var app = angular.module("homeschool", []);
+        app.config(function($interpolateProvider) {
+            $interpolateProvider.startSymbol('{$');
+            $interpolateProvider.endSymbol('$}');
+        });
+
+        app.controller('quizz', function($scope, $http, $location) {
+            $scope.fin = false;
+            $http({
+                method: 'GET',
+                url: '{% url 'quizz-detail' idQuizz %}'
+            }).then(function successCallback(response) {
+                $scope.questions = response.data.quizz.questions.sort(function(questionA, questionB){return questionA.partie < questionB.partie});
+                $scope.name = response.data.quizz.intitule;
+                var parties = [];
+                $.each(response.data.quizz.questions, function (index, question) {
+                    parties.push(question.partie);
+                });
+                var partiesSet = Array.from(new Set(parties));
+                var questionList = [];
+                angular.forEach(partiesSet, function(value, key){
+                    var questionsPartie = [];
+                    total = 0;
+                    angular.forEach($scope.questions, function(question1, key1){
+                        if(question1.partie==value){
+                            questionsPartie.push(question1);
+                            total = total + 1;
+                        }
+                    });
+                    questionList.push({"partie":value,"questions":questionsPartie, "note":0, "total":total});
+                });
+                $scope.questionsParties = questionList;
+                $scope.question = $scope.questions[0];
+                angular.forEach($scope.questions, function(value, key){
+                    value.propositions = value.propositions.sort(function(a, b){return 0.5 - Math.random()});
+                });
+            }, function errorCallback(response) {
+                alert(response.responseText);
+            });
+            $scope.changerQuestion = function (cleActuel) {
+                var index = 0;
+                angular.forEach($scope.questions, function(question1, key1){
+                    if(question1.idQuestion==cleActuel){
+                        index = key1;
+                    }
+                });
+                $scope.question = $scope.questions[index];
+            };
+            $scope.compterPoints = function (partie) {
+                note = 0;
+                angular.forEach(partie.questions, function(question, key1){
+                    solution = false;
+                    angular.forEach(question.propositions, function(proposition, key1){
+                        if((proposition.checked && ! proposition.solution) || ( !proposition.checked && proposition.solution)){
+                            solution = true;
+                        }
+                    });
+                    if(solution){
+                        note = note + 1;
+                    }
+                });
+                partie.note = note;
+            };
+            $scope.questionFait = function (question) {
+                solution = false;
+                angular.forEach(question.propositions, function(proposition, key1){
+                    if(proposition.checked){
+                        solution = true;
+                    }
+                });
+                return solution;
+            };
+            $scope.clickArreter = function () {
+                if(confirm("Voulez-vous vraiment arrêter le quiz ?")==true){
+                    $scope.fin = true;
+                };
+            };
+            $scope.clickValider = function (question) {
+                var $inputChecked = $("input[name='proposition']:checked");
+                var $input = $("input[name='proposition']");
+                $input.each(function () {
+                    index = $(this).attr("indexP");
+                    if($inputChecked.index($(this))>-1){
+                        question.propositions[index].checked = true;
+                    }else{
+                        question.propositions[index].checked = false;
+                    }
+                });
+                angular.forEach($scope.questionsParties, function(questionList, key){
+                    angular.forEach(questionList.questions, function(questionPartie, key1){
+                        if(questionPartie.idQuestion==question.idQuestion){
+                            questionPartie = question;
+                        }
+                    });
+                });
+
+            };
+        });
+
+        app.directive('mathJaxBind', function() {
+            var refresh = function(element) {
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub, element]);
+            };
+            return {
+                link: function(scope, element, attrs) {
+                    scope.$watch(attrs.mathJaxBind, function(newValue, oldValue) {
+                        element.text(newValue);
+                        refresh(element[0]);
+                    });
+                }
+            };
+        });
+
+        var monkeyList = new List('list-questions', {
+            valueNames: ['name'],
+            page: 10,
+            pagination: true
+        });
+
+    </script>
+{% endblock %}

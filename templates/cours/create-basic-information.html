@@ -1,0 +1,70 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{#TODO#}
+{#    - Controler si le titre n'est pas vide --------------DONE#}
+{#    - Controller la date d'ouverture --------------DONE#}
+{#    - Controller la date de fin d'inscription --------------DONE#}
+{#    - Controller la date de fin de cours --------------DONE#}
+{#    - Controller le montant --------------DONE#}
+
+
+
+{% block head_title %}Entrance preparation | Devoir {% endblock %}
+
+{% block contenu %}
+    {% if form.errors %}
+        {% for field in form %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    <strong>{{ error|escape }}</strong>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <div class="alert alert-danger">
+                <strong>{{ error|escape }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <style>
+        .message-erreur {
+            color: #E93C4F !important;
+        }
+    </style>
+    <!-- CREATE COURSE CONTENT -->
+    <section id="create-course-section" class="create-course-section" ng-controller="create_basic_information">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="create-course-sidebar">
+                        <ul class="list-bar">
+                            <li class="active"><span class="count">1</span>Information Basique</li>
+                            <li><span class="count">2</span>Chapitres</li>
+                            <li><span class="count">3</span>Devoirs</li>
+                            <li><span class="count">4</span>Publier le cours</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <div class="create-course-content">
+                        <form name="form_basic" name="form_basic" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% crispy form %}
+                            <div class="form-action">
+                                <button class="btn btn-primary" ng-click="checkForm()">Enrégistrer et suivant</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END / CREATE COURSE CONTENT -->
+{% endblock %}
+
+{% block controllerAngular %}
+    <script type="text/javascript" src="{% static 'megacourse/js/create-basic-information.js' %}"></script>
+{% endblock %}

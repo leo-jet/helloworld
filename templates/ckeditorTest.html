@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block head_title %}Profile{% endblock %}
+
+{% block content %}
+    $x=1$
+    <form>
+        <textarea name="editor1" id="editor1" rows="10" cols="80">
+            This is my textarea to be replaced with CKEditor.
+        </textarea>
+    </form>
+{% endblock %}
+
+{% block extraJavascript %}
+
+    <script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+    <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+
+    <script>
+        // Replace the <textarea id="editor1"> with a CKEditor
+       CKEDITOR.replace( 'editor1', {
+			// Load the timestamp plugin.
+			extraPlugins: 'timestamp',
+			// Rearrange toolbar groups and remove unnecessary plugins.
+			toolbarGroups: [
+				{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+				{ name: 'links' },
+				{ name: 'insert' },
+				{ name: 'document',	   groups: [ 'mode' ] },
+				'/',
+				{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+				{ name: 'paragraph',   groups: [ 'list', 'indent' ] },
+				{ name: 'styles' },
+				{ name: 'about' }
+			],
+			removePlugins: 'font,iframe,pagebreak,flash,stylescombo,print,preview,save,smiley,pastetext,pastefromword',
+			removeButtons: 'Anchor,Font,Strike,Subscript,Superscript'
+		} );
+    </script>
+{% endblock %}

@@ -1,0 +1,175 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+
+{#TODO#}
+{#    - Mettre le formulaire dans un panel ---------DONE#}
+{#    - mettre en gras les champs ---------DONE#}
+{#    - passer à angularjs ---------DONE#}
+{#    - Controller le titre ne doit pas déjà exister ---------DONE#}
+{#    - Controller la date de début : ne doit pas être inférieure à aujourd'hui,#}
+{#        ne doit pas coïncider avec la date de fin, ne doit pas dépasser la date de fin du cours ---------DONE#}
+{#    - Controller la date de fin : ne doit pas être inférieure à aujourd'hui,#}
+{#        ne doit pas coïncider avec la date de début, ne doit pas dépasser la date de fin du cours ---------DONE#}
+{#    - Le numéro du chapitre ne doit pas déjà exister ---------DONE#}
+{#    - Le contenu du chapitre doit être soit un lien vers un fichier enregistrer dans scribd, soit un texte si c'est un#}
+{#        chapitre de session ---------DONE#}
+{#    - Cadre des chapitres#}
+{#        * on peut modifier un chapitre. ---------DONE#}
+{#        * on supprimer un chapitre#}
+{#    - Controler que les numéros des chapitres se suivent ---------DONE#}
+
+
+
+{% block head_title %}Entrance preparation | Devoir {% endblock %}
+
+{% block contenu %}
+    <div ng-controller="creation-chapitre">
+        <style>
+            .message-erreur {
+                color: #E93C4F !important;
+            }
+        </style>
+    <!-- BANNER CREATE COURSE -->
+        <section class="sub-banner sub-banner-create-course">
+            <div class="awe-parallax bg-profile-feature"></div>
+            <div class="awe-overlay overlay-color-3"></div>
+            <div class="container">
+                <h2 class="md ilbl">{{ titre }}</h2>
+            </div>
+        </section>
+        <!-- END / BANNER CREATE COURSE -->
+
+        <!-- CREATE COURSE CONTENT -->
+        <section id="create-course-section" class="create-course-section">
+            <label name="classeID" id="{{ classeID }}" hidden></label>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                            <div class="create-course-sidebar">
+                                <ul class="list-bar">
+                                    <li><span class="count">1</span>Information Basique</li>
+                                    <li class="active"><span class="count">2</span>Creation des chapitres</li>
+                                    <li><span class="count">3</span>Creation des Travaux Dirigés</li>
+                                    <li><span class="count">4</span>Publier le cours</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    <div class="col-md-9">
+                        <div class="create-course-content">
+                            <div class="alert alert-success" name="alert-success-devoir" hidden>
+                                <strong>Succès!</strong> Votre chapitre a été enrégistré avec succès .
+                            </div>
+                            <div class="alert alert-danger" name="alert-chapitre" >
+                                <strong>Erreur!</strong> Il manque les chapitres suivants : <label name="chapitres"></label>
+                            </div>
+                            <ul class="dc-btn">
+                                <li>
+                                    <button href="" id="ajouter_chapitre" class="mc-btn-3 btn-style-7"><i class="icon md-plus"></i>Ajouter un chapitre</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <!-- DESIGN OUTLINE -->
+                                <div class="tab-pane fade in active" id="design-outline">
+                                    <!-- SECTIONS -->
+                                    <div class="dc-sections">
+                                        <!-- DC SECTION INFO -->
+                                        <div class="dc-section-info">
+
+                                            <div class="title-section" id="title" hidden>
+                                                <h4 class="xsm black">Nouveau chapitre</h4>
+                                                <div class="course-region-tool">
+                                                    <button href="#" id="close" class="delete" title="delete"><i class="icon md-recycle"></i></button>
+                                                </div>
+                                            </div>
+
+                                            <!-- DC SECTION BODY -->
+                                            <div class="dc-section-body">
+                                                <div class="dc-unit-info dc-course-item" ng-repeat="chapitre in chapitres">
+                                                    <div class="dc-content-title">
+                                                        <h5 class="xsm black">Chapitre {$ chapitre.numero $} : {$ chapitre.titre $}</h5>
+                                                        <div class="course-region-tool">
+                                                            <a href="#" class="edit" title="edit" ng-click="modifierChapitre(chapitre)"><i class="icon md-pencil"></i></a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="unit-body dc-item-body">
+                                                        <div class="content-item-info">
+                                                            <div class="upload-cnt">
+                                                                <div class="upload-meta">
+                                                                    <span>Date de début : {$ chapitre.dateDebut $}</span>
+                                                                </div>
+                                                                <div class="upload-meta">
+                                                                    <span>Date de fin : {$ chapitre.dateFin $}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END / DC UNIT -->
+                                            </div>
+                                            <!-- END / DC SECTION BODY -->
+                                        </div>
+                                        <!-- END / DC SECTION INFO -->
+
+                                    </div>
+                                    <!-- END / SECTIONS -->
+
+                                </div>
+                                <!-- END / DESIGN OUTLINE -->
+
+                            </div>
+                            <div class="form-action">
+                                <button class="btn btn-primary" ng-click="allerCreationDevoir()">Enrégistrer et continuer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <!-- Modal -->
+        </section>
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Création d'un nouveau chapitre</div>
+                            <div class="panel-body">
+                                <label name="debut" id="{{ debut|date:"Y-m-d" }}" hidden></label>
+                                <label name="fin" id="{{ fin|date:"Y-m-d" }}" hidden></label>
+                                <form id="new_chapitre" method="post" class="form-horizontal">
+                                    {% csrf_token %}
+                                    {% crispy form %}
+                                    <div class="form-group text-center">
+                                        <button class="btn btn-primary" ng-click="checkForm()">Enrégistrer</button>
+                                        <input name="annuler"
+                                               value="Annuler"
+                                               class="btn btn-inverse btn btn-info"
+                                               id="annuler"
+                                               type="reset">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- END / CREATE COURSE CONTENT -->
+    </div>
+{% endblock %}
+
+{% block controllerAngular %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+    <script src="{% static 'megacourse/js/creation_chapitres.js' %}"></script>
+{% endblock %}

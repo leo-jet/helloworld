@@ -1,0 +1,72 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+
+{#TODO#}
+{#    - Verifier a l'aide d'angular que les identifiants et mot de pass sont corrects DONE#}
+{#    - faire fonctionner le button remember me#}
+{#    - remplacer remember me par enregistrer DONE#}
+{#    - chercher une photo à mettre à cette page#}
+
+
+{% block head_title %}
+    Connexion
+{% endblock %}
+
+{% block contenu %}
+    <!-- LOGIN -->
+    <section id="login-content" class="login-content" ng-controller="login">
+        <div class="awe-parallax bg-login-content"></div>
+        <div class="awe-overlay"></div>
+        <div class="container">
+            <div class="row">
+                <!-- FORM -->
+                <div class="col-xs-12 col-lg-4 pull-right">
+                    <div class="form-login">
+                        <form id="connexion" method="post" action="{% url 'account_login' %}">{% csrf_token %}
+                            <h2 class="text-uppercase">Se connecter</h2>
+                            <div class="alert alert-danger" id="error" hidden>
+                                L'<strong>identifiant</strong> et/ou le <strong>mot de pass</strong> que vous venez d'entrer est incorrect
+                            </div>
+                            <div class="form-email">
+                                <input placeholder="Identifiant ou email" name="login" type="text" ng-model="username">
+                            </div>
+                            <div class="form-password">
+                                <input placeholder="Mot de pass" name="password" type="password" ng-model="password">
+                            </div>
+                            <div class="form-check">
+                                <input id="check" type="checkbox">
+                                <label for="check">
+                                <i class="icon md-check-2"></i>
+                                Enrégistrer</label>
+                                <a href="{% url 'account_reset_password' %}">Mot de pass oublié ?</a>
+                            </div>
+                        </form>
+                        <div class="form-submit-1">
+                            <button class="mc-btn btn-style-1" ng-click="clickConnecter()">Se connecter</button>
+                        </div>
+                        <div class="link">
+                            <a href="{% url 'account_signup' %}">
+                                <i class="icon md-arrow-right"></i>Vous n'avez pas encore de compte ? Enrégistrez-vous !
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- END / FORM -->
+
+                <div class="image">
+                    <img src="{% static 'megacourse/images/img-thumb.png' %}" alt="">
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- END / LOGIN -->
+{% endblock %}
+
+
+{% block controllerAngular %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+    <script src="{% static 'megacourse/js/login.js' %}"></script>
+{% endblock %}

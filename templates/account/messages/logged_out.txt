@@ -1,0 +1,2 @@
+{% load i18n %}
+{% blocktrans %}Au revoir et à très bientôt sur www.maths-homeschool.ga !{% endblocktrans %}

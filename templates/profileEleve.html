@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+{% load tags %}
+
+{% block head_title %}Profile{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#classes" data-toggle="tab">
+                            <i class="fa fa-book" aria-hidden="true"> Mes cours</i></a>
+                        </li>
+                        <li><a href="#devoirs" data-toggle="tab">Mes devoirs</a></li>
+                        <li><a href="#progressions" data-toggle="tab">Mes progression</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="active tab-pane" id="classes">
+                            <table id="classeTable" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Classes</th>
+                                    <th>Groupe</th>
+                                    <th>Matière</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for classe in mesclasses %}
+                                    <tr class='clickable-row'>
+                                        <td>{{ forloop.counter }}.</td>
+                                        <td>{{ classe.nom }}</td>
+                                        <td>{{ classe.groupe.nom }}</td>
+                                        <td>{{ classe.enseignant.specialite }}</td>
+                                        <td>En cours</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.tab-pane -->
+                        <div class="tab-pane" id="devoirs">
+                            <table id="devoirTable" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Intitulé</th>
+                                    <th>Groupe</th>
+                                    <th>Date de fin</th>
+                                    <th>Durée</th>
+                                    <th>Nombre d'essais</th>
+                                    <th>Résultats</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for devoir in mesDevoirs %}
+                                        <tr class='clickable-row' data-href="{% url 'devoir-faire' devoir.id %}">
+                                        <td>{{ forloop.counter }}.</td>
+                                        <td>{{ devoir.quizz.intitule }}</td>
+                                        <td>{{ devoir.classe.groupe.nom }}</td>
+                                        <td>{{ devoir.dateFin |date:"d-M-Y, h:m:s"  }}</td>
+                                        <td>{{ devoir.duree }}</td>
+                                        <td>{{ devoir.nombreEssai }}</td>
+                                        <td>
+                                            {% if devoir.correction %}
+                                                {% compte_note devoir.id request.user %} %
+                                            {% else %}
+                                                <span class="label label-danger">Non disponible</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if devoir.is_open_now %}
+                                                 <span class="label label-success">En cours</span>
+                                            {% else %}
+                                                <span class="label label-danger">Terminé</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary btn-flat">Action</button>
+                                                <button type="button" class="btn btn-primary btn-flat dropdown-toggle" data-toggle="dropdown">
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    {% if devoir.is_open_now %}
+                                                        <li><a href="{% url 'devoir-faire' devoir.id %}">Faire le devoir</a></li>
+                                                    {% endif %}
+                                                    <li class="divider"></li>
+                                                    <li><a href="{% url 'devoir-corriger-profile' devoir.id %}">Correction</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.tab-pane -->
+
+                        <div class="tab-pane" id="progressions">
+                            Mes progressions
+                        </div>
+                        <!-- /.tab-pane -->
+                    </div>
+                    <!-- /.tab-content -->
+                </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block extraJavascript %}
+    <script>
+        $('#classeTable').DataTable();
+        $('#devoirTable').DataTable({
+            'paging'      : true,
+            'lengthChange': false,
+            'searching'   : false,
+            'ordering'    : true,
+            'info'        : true,
+            'autoWidth'   : false
+        });
+    </script>
+{% endblock %}

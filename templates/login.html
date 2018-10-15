@@ -1,0 +1,67 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+
+{% block head_title %}
+    Entrance preparation | Login
+{% endblock %}
+
+{% block contenu %}
+    <!-- LOGIN -->
+    <section id="login-content" class="login-content">
+        <div class="awe-parallax bg-login-content"></div>
+        <div class="awe-overlay"></div>
+        <div class="container">
+            <div class="row">
+                <!-- FORM -->
+                <div class="col-xs-12 col-lg-4 pull-right">
+                    <div class="form-login">
+                        <form id="connexion" method="post" action="{% url 'account_login' %}">
+                            <h2 class="text-uppercase">Se connecter</h2>
+                            {% csrf_token %}
+                            <div class="form-email">
+                                {{ form.login }}
+                            </div>
+                            <div class="form-password">
+                                {{ form.password }}
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="check">
+                                <label for="check">
+                                    <i class="icon md-check-2"></i>
+                                    Se souvenir de moi
+                                </label>
+                                <a href="{% url 'account_reset_password' %}">Mot de pass oublié ?</a>
+                            </div>
+                            <div class="form-check">
+                                <a href="{% url 'account_reset_password' %}">Mot de pass oublié ?</a>
+                            </div>
+                            <div class="form-submit-1">
+                                <button id="submit" class="mc-btn btn-style-1">Se connecter</button>
+                            </div>
+                            <div class="link">
+                                <a href="register.html">
+                                    <i class="icon md-arrow-right"></i>Vous n'avez pas encore de compte ? Enrégistrez-vous !
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- END / FORM -->
+
+                <div class="image">
+                    <img src="{% static 'megacourse/images/img-thumb.png' %}" alt="">
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- END / LOGIN -->
+{% endblock %}
+
+{% block extra_javascript %}
+<script>
+    $("#submit").on('click', function () {
+       $('#connexion').submit();
+    });
+</script>
+{% endblock %}

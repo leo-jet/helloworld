@@ -1,0 +1,75 @@
+{% extends 'cours/base_asignment.html' %}
+{% load staticfiles %}
+
+{% block head_title %}Entrance preparation | Envoyé un devoir{% endblock %}
+
+{% block contenu %}
+    <section id="quizz-intro-section" class="quizz-intro-section learn-section">
+        <div class="container">
+            <label name="classeConfiguration" id="{{ classe.idClass }}" hidden></label>
+            <div class="title-ct">
+                <h3><strong>Quiz</strong>{{ devoir.quizz.intitule }}.</h3>
+                <div class="tt-right">
+                    <a href="#" class="skip"><i class="icon md-arrow-right"></i>Skip quizz</a>
+                </div>
+            </div>
+            {% if status %}
+                <div class="question-content-wrap">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="question-content">
+                            <h4 class="md">Introduction</h4>
+                            <p>{{ devoir.quizz.consignes | safe}}</p>
+                            <div class="form-action">
+                                <input type="submit" value="Commencer le quizz" class="mc-btn btn-style-1">
+                                <span class="total-time">Durée : {{ devoir.duree }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <aside class="question-sidebar">
+                            <div class="score-sb">
+                                <h4 class="title-sb sm bold">Score total<span>{{ devoir.quizz.questions.count }}</span></h4>
+                                <ul>
+                                    {%  for question in devoir.quizz.questions.all %}
+                                        <li><i class="icon"></i>Question {{ forloop.counter }}<span>1</span></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            {% else %}
+                <div class="question-content-wrap">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="question-content">
+                            <div class="alert alert-warning">
+                                Vous avez dépassé le nombre de tentatives ou la date buttoir pour faire ce devoir.
+                                    <br>
+                                    <br>
+                                {% if devoir.correction %}
+                                    <strong>La correction est disponible ici :</strong>
+                            <div class="form-action">
+                                <input type="submit" value="Voir la correction" class="mc-btn btn-style-1">
+                            </div>
+                                {% else %}
+                                    <strong>La correction n'a pas encore été publiée.</strong>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_javascript %}
+    <script>
+        $("input[type='submit']").on('click', function () {
+            window.location.href = "/quizz/{{ devoir.id }}/";
+    })
+</script>
+{% endblock %}

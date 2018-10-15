@@ -1,0 +1,681 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+
+{#TODO#}
+{#    - La liste des devoirs doit s'afficher en premier#}
+{#    - Controler le titre du devoir si il n'existe pas déjà, sa longueur#}
+{#    - controller la date de début,#}
+{#    - controller la date de fin#}
+{#    - Si durée limitée, afficher la durée#}
+{#    - Si nombre d'essai limitée, afficher le nombre d'essais#}
+{#    - Afficher le nombre total de question#}
+{#    - formulaire de question#}
+{#        * on doit pouvoirs revenir en arrière#}
+{#        * il faut réinitialiser tout lorsqu'on ferme la boîte#}
+
+
+{% block head_title %}Entrance preparation | Devoir {% endblock %}
+
+{% block extra_css %}
+    <style>
+        .pagination {
+            display: inline-block;
+        }
+
+        .pagination button {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        .pagination button.active {
+            background-color: #1968ff;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .pagination button:hover:not(.active) {
+            background-color: #ddd;
+            border-radius: 5px;
+        }
+        .stepwizard-step p {
+            margin-top: 10px;
+        }
+
+        .stepwizard-row {
+            display: table-row;
+        }
+
+        .stepwizard {
+            display: table;
+            width: 100%;
+            position: relative;
+        }
+
+        .stepwizard-step button[disabled] {
+            opacity: 1 !important;
+            filter: alpha(opacity=100) !important;
+        }
+
+        .stepwizard-row:before {
+            top: 14px;
+            bottom: 0;
+            position: absolute;
+            content: " ";
+            width: 100%;
+            height: 1px;
+            background-color: #ccc;
+            z-order: 0;
+
+        }
+
+        .stepwizard-step {
+            display: table-cell;
+            text-align: center;
+            position: relative;
+        }
+
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            padding: 6px 0;
+            font-size: 12px;
+            line-height: 1.428571429;
+            border-radius: 15px;
+        }
+        .checkbox {
+            padding-left: 20px; }
+        .checkbox label {
+            display: inline-block;
+            position: relative;
+            padding-left: 5px; }
+        .checkbox label::before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            width: 17px;
+            height: 17px;
+            left: 0;
+            margin-left: -20px;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            background-color: #fff;
+            -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+            -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+            transition: border 0.15s ease-in-out, color 0.15s ease-in-out; }
+        .checkbox label::after {
+            display: inline-block;
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            left: 0;
+            top: 0;
+            margin-left: -20px;
+            padding-left: 3px;
+            padding-top: 1px;
+            font-size: 11px;
+            color: #555555; }
+        .checkbox input[type="checkbox"] {
+            opacity: 0; }
+        .checkbox input[type="checkbox"]:focus + label::before {
+            outline: thin dotted;
+            outline: 5px auto -webkit-focus-ring-color;
+            outline-offset: -2px; }
+        .checkbox input[type="checkbox"]:checked + label::after {
+            font-family: 'FontAwesome';
+            content: "\f00c"; }
+        .checkbox input[type="checkbox"]:disabled + label {
+            opacity: 0.65; }
+        .checkbox input[type="checkbox"]:disabled + label::before {
+            background-color: #eeeeee;
+            cursor: not-allowed; }
+        .checkbox.checkbox-circle label::before {
+            border-radius: 50%; }
+        .checkbox.checkbox-inline {
+            margin-top: 0; }
+
+        .checkbox-primary input[type="checkbox"]:checked + label::before {
+            background-color: #428bca;
+            border-color: #428bca; }
+        .checkbox-primary input[type="checkbox"]:checked + label::after {
+            color: #fff; }
+
+        .checkbox-danger input[type="checkbox"]:checked + label::before {
+            background-color: #d9534f;
+            border-color: #d9534f; }
+        .checkbox-danger input[type="checkbox"]:checked + label::after {
+            color: #fff; }
+
+        .checkbox-info input[type="checkbox"]:checked + label::before {
+            background-color: #5bc0de;
+            border-color: #5bc0de; }
+        .checkbox-info input[type="checkbox"]:checked + label::after {
+            color: #fff; }
+
+        .checkbox-success input[type="checkbox"]:checked + label::before {
+            background-color: #5cb85c;
+            border-color: #5cb85c; }
+        .checkbox-success input[type="checkbox"]:checked + label::after {
+            color: #fff; }
+
+        .radio {
+            padding-left: 20px; }
+        .radio label {
+            display: inline-block;
+            position: relative;
+            padding-left: 5px; }
+        .radio label::before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            width: 17px;
+            height: 17px;
+            left: 0;
+            margin-left: -20px;
+            border: 1px solid #cccccc;
+            border-radius: 50%;
+            background-color: #fff;
+            -webkit-transition: border 0.15s ease-in-out;
+            -o-transition: border 0.15s ease-in-out;
+            transition: border 0.15s ease-in-out; }
+        .radio label::after {
+            display: inline-block;
+            position: absolute;
+            content: " ";
+            width: 11px;
+            height: 11px;
+            left: 3px;
+            top: 3px;
+            margin-left: -20px;
+            border-radius: 50%;
+            background-color: #555555;
+            -webkit-transform: scale(0, 0);
+            -ms-transform: scale(0, 0);
+            -o-transform: scale(0, 0);
+            transform: scale(0, 0);
+            -webkit-transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            -moz-transition: -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            -o-transition: -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+            transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33); }
+        .radio input[type="radio"] {
+            opacity: 0; }
+        .radio input[type="radio"]:focus + label::before {
+            outline: thin dotted;
+            outline: 5px auto -webkit-focus-ring-color;
+            outline-offset: -2px; }
+        .radio input[type="radio"]:checked + label::after {
+            -webkit-transform: scale(1, 1);
+            -ms-transform: scale(1, 1);
+            -o-transform: scale(1, 1);
+            transform: scale(1, 1); }
+        .radio input[type="radio"]:disabled + label {
+            opacity: 0.65; }
+        .radio input[type="radio"]:disabled + label::before {
+            cursor: not-allowed; }
+        .radio.radio-inline {
+            margin-top: 0; }
+
+        .radio-primary input[type="radio"] + label::after {
+            background-color: #428bca; }
+        .radio-primary input[type="radio"]:checked + label::before {
+            border-color: #428bca; }
+        .radio-primary input[type="radio"]:checked + label::after {
+            background-color: #428bca; }
+
+        .radio-danger input[type="radio"] + label::after {
+            background-color: #d9534f; }
+        .radio-danger input[type="radio"]:checked + label::before {
+            border-color: #d9534f; }
+        .radio-danger input[type="radio"]:checked + label::after {
+            background-color: #d9534f; }
+
+
+        .radio-success input[type="radio"] + label::after {
+            background-color: #5cb85c; }
+        .radio-success input[type="radio"]:checked + label::before {
+            border-color: #5cb85c; }
+        .radio-success input[type="radio"]:checked + label::after {
+            background-color: #5cb85c; }
+        .separator { padding-right:5px;padding-left:5px; }
+        span.divider {
+            width: 50%;
+            flex-shrink: 1;
+            border-bottom: 10px solid black;
+            margin: 5px
+        }
+        .message-error {
+                color: #E93C4F !important;
+            }
+        hr.style { border: 0; height: 4px; background: black;  }
+    </style>
+{% endblock %}
+
+{% block contenu %}
+    <div ng-controller="creation-devoir">
+        <label id="numero_proposition_ajoutee" hidden></label>
+        <label id="proposition_courante" hidden></label>
+        <label name="groupeID" id="{{ groupeID }}" hidden></label>
+        <label name="classeID" id="{{ classeID }}" hidden></label>
+        <label name="debut" id="{{ debut|date:"Y-m-d" }}" hidden></label>
+        <label name="fin" id="{{ fin|date:"Y-m-d" }}" hidden></label>
+
+        <!-- BANNER CREATE COURSE -->
+        <section class="sub-banner sub-banner-create-course">
+            <div class="awe-parallax bg-profile-feature"></div>
+            <div class="awe-overlay overlay-color-3"></div>
+            <div class="container">
+                <h2 class="md ilbl">{{ titre }}</h2>
+            </div>
+        </section>
+        <!-- END / BANNER CREATE COURSE -->
+
+        <!-- CREATE COURSE CONTENT -->
+        <section id="create-course-section" class="create-course-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                            <div class="create-course-sidebar">
+                                <ul class="list-bar">
+                                    <li><span class="count">1</span>Information Basique</li>
+                                    <li><span class="count">2</span>Chapitres</li>
+                                    <li class="active"><span class="count">3</span>Devoirs</li>
+                                    <li><span class="count">4</span>Publier le cours</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    <div class="col-md-9">
+                        <div class="create-course-content">
+
+                            <!-- COURSE BANNER -->
+                            <ul class="design-course-tabs" role="tablist">
+                                <li class="active">
+                                    <a href="#design-outline" role="tab" data-toggle="tab">
+                                        <i class="icon md-list"></i>
+                                        Devoir
+                                    </a>
+                                </li>
+                                <li class="">
+                                    <a href="#design-question" role="tab" data-toggle="tab">
+                                        <i class="fa fa-question-circle"></i>
+                                        Banc de questions
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <!-- DESIGN OUTLINE -->
+                                <div class="tab-pane fade active in" id="design-outline">
+                                    <div class="alert alert-success" name="alert-success-devoir" hidden>
+                                        <strong>Succès!</strong> Votre devoir a bien été créé avec succès .
+                                    </div>
+                                    <!-- SECTIONS -->
+                                    <div class="dc-sections">
+                                        <!-- DC SECTION INFO -->
+                                        <div class="dc-section-info">
+                                            <!-- DC SECTION BODY -->
+                                            <div class="dc-section-body">
+                                                <div class="dc-unit-info dc-course-item">
+                                                    <button class="btn btn-primary"
+                                                            ng-click="clickNouveauDevoir()">
+                                                        <i class="icon md-plus"></i> Nouveau devoir
+                                                    </button>
+                                                </div>
+
+                                                <!-- DC UNIT -->
+                                                <div class="dc-unit-info dc-course-item" id="nouveauDevoirDiv" hidden>
+                                                    <div class="dc-content-title">
+                                                        <h5 class="xsm black">Nouveau devoir</h5>
+                                                        <div class="course-region-tool">
+                                                            <a href="#" ng-click="clickFermerNouveauDevoir()"
+                                                               class="delete"
+                                                               title="delete">
+                                                                <i class="icon md-recycle"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="unit-body dc-item-body">
+                                                        <form id="new_td" class="form-horizontal" method="post">
+                                                            {% crispy form %}
+                                                            <div class="form-action">
+                                                                <div class="form-group">
+                                                                    <button class="btn btn-primary" ng-click="checkForm()">Créer le devoir</button>
+                                                                    <input name="annuler"
+                                                                           value="Annuler"
+                                                                           class="btn btn-inverse btn btn-info"
+                                                                           id="reset-id-annuler"
+                                                                           type="reset">
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <!-- END / DC UNIT -->
+                                                <div class="dc-unit-info dc-course-item" ng-repeat="devoir in devoirs">
+                                                    <div class="dc-content-title">
+                                                        <h5 class="xsm black">Devoir : {$ devoir.titre $} </h5>
+                                                        <div class="course-region-tool">
+                                                            <a href="#"
+                                                                class="edit"
+                                                                ng-click="clickVoirDemoDevoir(devoir.id)"
+                                                                title="edit">
+                                                                <i class="fas fa-search"></i>
+                                                            </a>
+                                                            <a href="#"
+                                                              class="delete"
+                                                              ng-click="clickSupprimerDevoir(devoir.id)"
+                                                              title="delete">
+                                                               <i class="icon md-recycle"></i>
+                                                           </a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="unit-body dc-item-body">
+                                                        <div class="content-item-info">
+                                                            <h4>{$ devoir.chapitre_titre $}</h4>
+                                                            <div>
+                                                                Date de début : {$ devoir.dateDebut $}
+                                                            </div>
+                                                            <div>
+                                                                Date de fin : {$ devoir.dateFin $}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- END / DC SECTION BODY -->
+
+                                        </div>
+                                        <!-- END / DC SECTION INFO -->
+                                    </div>
+
+                                    <!-- END / SECTIONS -->
+                                </div>
+                                <!-- END / DESIGN OUTLINE -->
+
+                                <!-- DESIGN QUESTION -->
+                                <div class="tab-pane fade" id="design-question">
+                                    <div class="alert alert-success" name="alert-success" hidden>
+                                        <strong>Succès!</strong> Votre question a bien été créée.
+                                    </div>
+                                    <div class="total-quest">
+                                        <h4 class="sm black">Total Questions</h4>
+                                        <div class="count"><span>5</span> questions</div>
+                                        <div class="new-question">
+                                            <button class="btn btn-primary" id="ajouter_question_bouton2"
+                                            ng-click="clickNouvelleQuestion()">
+                                                <i class="icon md-plus"></i>Nouvelle question
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <h4>Cours</h4>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="controls ">
+                                                    <select name="chapitre"
+                                                            class="select form-control"
+                                                            required=""
+                                                            id="chapitre_selector">
+                                                        <option value="" selected="">---------</option>
+                                                        <option ng-repeat="cours in classes" ng-click="clickCours(cours)">
+                                                            {$ cours.nom $}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="form-item">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <h4>Chapitre</h4>
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div class="controls ">
+                                                    <select
+                                                            name="chapitre"
+                                                            class="select form-control"
+                                                            required=""
+                                                            id="chapitre_selector">
+                                                        <option value="" selected="">---------</option>
+                                                        <option
+                                                                ng-repeat="chapitre in chapitres"
+                                                                ng-click="clickChapitre(chapitre)">
+                                                            {$ chapitre.titre $}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <!-- END / SECTIONS -->
+                                    <div
+                                            class="panel panel-primary"
+                                            ng-repeat="question in questions"
+                                            id="question{$question.idQuestion$}">
+                                        <div class="panel-heading clearfix">
+                                            <div class="pull-left">
+                                                <button
+                                                        class="btn btn-primary disabled">
+                                                    Question N° {$ question.idQuestion $}
+                                                </button>
+                                            </div>
+                                            <div class="pull-right">
+                                                <button
+                                                        name="{$ question.idQuestion $}"
+                                                        class="btn btn-info"
+                                                        ng-click="clickAjouterQuestion(question.idQuestion)">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                                <button class="btn btn-warning"><i class="fa fa-edit"></i></button>
+                                                <button
+                                                        name="supprimer{$ question.idQuestion $}"
+                                                        class="btn btn-danger hidden"
+                                                        ng-click="clickSupprimerQuestion(question.idQuestion)">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            <strong>Enoncé</strong>
+                                            <div
+                                                    class="panel panel-default panel-body"
+                                                    mathjax
+                                                    ng-bind-html="question.enonce">
+                                            </div>
+                                            <hr>
+                                            <strong>Proposition</strong>
+                                            <div ng-if="question.type=='qcm'">
+                                                <div ng-repeat="proposition in question.propositions">
+                                                    <div class="panel panel-success panel-body">
+                                                        <div class="checkbox checkbox-primary">
+                                                            <input id="checkbox{$ proposition.id $}" type="checkbox">
+                                                            <label
+                                                                    for="checkbox{$ proposition.id $}"
+                                                                    mathjax
+                                                                    ng-bind-html="proposition.enonce">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div ng-if="question.type=='ci' || question.type=='qru'">
+                                                <div ng-repeat="proposition in question.propositions">
+                                                    <div class="panel panel-success panel-body">
+                                                        <div class="radio radio-primary">
+                                                            <input id="radio" type="radio">
+                                                            <label
+                                                                    for="radio"
+                                                                    mathjax
+                                                                    ng-bind-html="proposition.enonce">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel panel-default panel-body" ng-if="question.type=='qcr' || question.type=='qr'">
+                                                <div ng-repeat="proposition in question.propositions">
+                                                    <div class="col-md-4">
+                                                        <div class="panel panel-success panel-body"
+                                                             mathjax ng-bind-html="proposition.enonceA">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <hr class="style">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="panel panel-success panel-body"
+                                                            mathjax ng-bind-html="proposition.enonceB">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="panel panel-default panel-body" ng-if="question.type=='schema'">
+                                                <div ng-repeat="proposition in question.propositions">
+                                                    <div class="col-md-4">
+                                                        <div class="panel panel-success panel-body"
+                                                            mathjax ng-bind-html="proposition.numero">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <hr class="style">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="panel panel-success panel-body"
+                                                            mathjax ng-bind-html="proposition.annotation">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="pagination">
+                                            <button class="btn btn-default">&laquo;</button>
+                                            <button
+                                                    class="btn btn-default"
+                                                    ng-repeat="number in paginationTotal"
+                                                    ng-click="clickPagination(number)">
+                                                {$ $index + 1 $}
+                                            </button>
+                                            <button class="btn btn-default">&raquo;</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END / DESIGN QUESTION -->
+                                <div class="form-action">
+                                    <a href="{% url 'creation-publier' classeID %}" class="btn btn-warning">Enrégistrer et publier</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="list-group-item hidden" name="proposition_relationnelle">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <p class="divider">
+                                <span class="label label-default" name="enonceA"></span>
+                                <span class="divider"></span>
+                                <span class="label label-default" name="enonceB"></span>
+                            </p>
+                        </div>
+                    </div>
+                    <span class="label label-danger">
+                        <a href="#" name="supprimer_proposition" style="color: whitesmoke">supprimer</a>
+                    </span>
+                </div>
+                <div class="list-group-item hidden" name="proposition_reponse">
+                    <div name="texte"></div>
+                    <hr/>
+                    <span class="label label-default">Réponse </span> :
+                    <span class="label label-success"><i class="fa fa-check-circle"></i></span>
+                    <span class="separator">|</span>
+                    <span class="label label-danger">
+                        <a href="#" name="supprimer_proposition" style="color: whitesmoke">supprimer</a>
+                    </span>
+                </div>
+                <div class="list-group-item hidden" name="proposition_faux">
+                    <div name="texte"></div>
+                    <hr/>
+                    <span class="label label-default">Réponse</span> :
+                    <span class="label label-danger"><i class="fa fa-times-circle"></i></span>
+                    <span class="separator">|</span>
+                    <span class="label label-danger">
+                        <a href="#" name="supprimer_proposition" style="color: whitesmoke">supprimer</a>
+                    </span>
+                </div>
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-body" id="creation_question">
+                            <div class="panel panel-primary" id="panel_question">
+                                <div class="panel-heading">
+                                    Création d'une question
+                                </div>
+                                <div class="panel-body">
+                                    <form id="question" class="form-horizontal" method="post">
+                                        <div id="body_form">
+                                            <input type="hidden" name="classeID" value="{{ classeID }}">
+                                            {% crispy question %}
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="panel_propositions" hidden>
+                                <div class="panel panel-info">
+                                    <div class="panel-heading">
+                                        Création les propositions
+                                    </div>
+                                    <div class="panel-body">
+                                        <form id="proposition" class="form-horizontal" method="post">
+                                            <div id="proposition_body_form">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="panel panel-warning">
+                                    <div class="panel-heading">
+                                        Liste des propositions
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="list-group" id="my_propositions_liste">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+            <!-- END / CREATE COURSE CONTENT -->
+    </div>
+
+{% endblock %}
+
+{% block extra_javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha384-FzT3vTVGXqf7wRfy8k4BiyzvbNfeYjK+frTVqZeNDFl8woCbF0CYG6g2fMEFFo/i" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block controllerAngular %}
+    <script src="{% static 'megacourse/js/creation_tds.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,12 @@
+Bienvenur sur Homeschool,
+
+Pour activer votre compte, veuillez cliquer sur le lien ci dessous ou copier/coller dans votre navigateur internet.
+ {{ activate_url }}
+
+Cordialement,
+
+L'équipe de Homeschool.
+
+---------------
+
+Ceci est un mail automatique, Merci de ne pas y répondre.

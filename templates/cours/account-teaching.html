@@ -1,0 +1,106 @@
+{% extends 'cours/base.html' %}
+{% load staticfiles %}
+{% load tags %}
+
+{#TODO#}
+{#    - On doit être redirigé vers cette page uniquement si on en enseignant#}
+{#    - On doit être redirigé vers cette page uniquement si nos informations sont complètes#}
+{#    - Passer en Angular#}
+{#    - Ajouter l'onglet de notifications d'inscription#}
+{#    - Modifier la barre des pages et ajouter la page de notifications #}
+
+
+
+{% block head_title %}Entrance preparation | Devoir {% endblock %}
+
+{% block contenu %}
+
+    {% include 'cours/header_profile.html' %}
+
+    <!-- CONTEN BAR -->
+    <section class="content-bar">
+        <div class="container">
+            <ul>
+                {% if eleve %}
+                    <li>
+                        <a href="{% url 'account_apprentissage' %}">
+                            <i class="icon md-book-1"></i>
+                            Mes cours
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="current">
+                        <a href="{% url 'account_enseignement' %}">
+                            <i class="icon md-people"></i>
+                            Mes cours
+                        </a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a href="{% url 'account_profil_invite' %}">
+                        <i class="icon md-user-minus"></i>
+                        Information
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+   <!-- END / CONTENT BAR -->
+
+
+    <!-- COURSE CONCERN -->
+    <section id="course-concern" class="course-concern">
+        <div class="container">
+
+            <div class="price-course">
+                <i class="icon md-database"></i>
+                <h3>Crédit disponible </h3>
+                <span>{% compte_debit request.user.username %} CFA</span>
+                <div class="create-coures">
+                    <a href="{% url 'create-basic-information' %}" class="mc-btn btn-style-1">Créer un cours</a>
+                    <a href="#" class="mc-btn btn-style-5">Débiter son compte</a>
+                </div>
+
+            </div>
+            <div class="row">
+                {% for classe in classes %}
+                    <div class="col-xs-6 col-sm-4 col-md-3">
+                        <!-- MC ITEM -->
+                        <div class="mc-teaching-item mc-item mc-item-2">
+                            <div class="image-heading">
+                                <img src="{{ classe.logo.url }}" alt="">
+                            </div>
+                            <div class="meta-categories"><a href="#">{{ classe.matiere }}</a></div>
+                            <div class="content-item">
+                                <h4>{{ classe.nom }}</h4>
+                            </div>
+                            <div class="ft-item">
+                                <div class="rating">
+                                    <a href="#" class="active"></a>
+                                    <a href="#" class="active"></a>
+                                    <a href="#" class="active"></a>
+                                    <a href="#"></a>
+                                    <a href="#"></a>
+                                </div>
+                                <div class="view-info">
+                                    <i class="icon md-users"></i>
+                                    {% compte_nombre_inscrit classe.idClass %}
+                                </div>
+                                <div class="price">
+                                    {{ classe.prix }}
+                                </div>
+                            </div>
+
+                            <div class="edit-view">
+                                <a href="{% url 'create-basic-information' %}" class="edit">Modifier</a>
+                                <a href="{% url 'cours-intro' classe.idClass %}" class="view">Aperçu</a>
+                            </div>
+                        </div>
+                        <!-- END / MC ITEM -->
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- END / COURSE CONCERN -->
+{% endblock %}
