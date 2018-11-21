@@ -156,8 +156,8 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'HOST': 'homeschoolCameroun.mysql.pythonanywhere-services.com',
             'PORT': '3306',
-            'NAME': 'homeschoolCameroun$homeschoolCamero',
-            'USER': 'homeschoolCameroun',
+            'NAME': 'homeschoolCamero$homeschool',
+            'USER': 'homeschoolCamero',
             'PASSWORD': 'leojet2017!',
         }
     }

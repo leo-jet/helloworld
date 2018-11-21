@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list id="4a5b01ce-11d2-43f9-9729-5b58c3c74312" name="Revert: TODO DONE (Requirements)&#10;        - CREATION DEVOIRS ET PUBLIERS (971f17f0e4b2391ea955fe89afef5c7ebdc9deba)" comment="revert" />
     <list default="true" id="543e6eb7-9da5-4335-a995-935a9a489f49" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/homeschool_production.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/homeschool_production.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/homeschool_production/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/homeschool_production/settings.py" afterDir="false" />
     </list>
@@ -94,8 +92,8 @@
       <file leaf-file-name="settings.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/homeschool_production/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
-              <caret line="27" column="19" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
+            <state relative-caret-position="160">
+              <caret line="159" column="37" selection-start-line="159" selection-start-column="37" selection-end-line="159" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -480,34 +478,6 @@
       <option name="presentableId" value="Default" />
       <updated>1518554025616</updated>
     </task>
-    <task id="LOCAL-00052" summary="TODO DONE (Requirements)&#10;        - CREATION DEVOIRS ET PUBLIERS">
-      <created>1520435160965</created>
-      <option name="number" value="00052" />
-      <option name="presentableId" value="LOCAL-00052" />
-      <option name="project" value="LOCAL" />
-      <updated>1520435160965</updated>
-    </task>
-    <task id="LOCAL-00053" summary="revert">
-      <created>1520435497122</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1520435497122</updated>
-    </task>
-    <task id="LOCAL-00054" summary="we cashup">
-      <created>1520436010967</created>
-      <option name="number" value="00054" />
-      <option name="presentableId" value="LOCAL-00054" />
-      <option name="project" value="LOCAL" />
-      <updated>1520436010967</updated>
-    </task>
-    <task id="LOCAL-00055" summary="we cashup">
-      <created>1520436290267</created>
-      <option name="number" value="00055" />
-      <option name="presentableId" value="LOCAL-00055" />
-      <option name="project" value="LOCAL" />
-      <updated>1520436290267</updated>
-    </task>
     <task id="LOCAL-00056" summary="we cashup">
       <created>1520437814545</created>
       <option name="number" value="00056" />
@@ -823,7 +793,35 @@
       <option name="project" value="LOCAL" />
       <updated>1542836120661</updated>
     </task>
-    <option name="localTasksCounter" value="101" />
+    <task id="LOCAL-00101" summary="allow host *">
+      <created>1542836606590</created>
+      <option name="number" value="00101" />
+      <option name="presentableId" value="LOCAL-00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1542836606590</updated>
+    </task>
+    <task id="LOCAL-00102" summary="mysql">
+      <created>1542837427594</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1542837427594</updated>
+    </task>
+    <task id="LOCAL-00103" summary="mysql 2">
+      <created>1542837562216</created>
+      <option name="number" value="00103" />
+      <option name="presentableId" value="LOCAL-00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1542837562216</updated>
+    </task>
+    <task id="LOCAL-00104" summary="mysql 3">
+      <created>1542837863545</created>
+      <option name="number" value="00104" />
+      <option name="presentableId" value="LOCAL-00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1542837863545</updated>
+    </task>
+    <option name="localTasksCounter" value="105" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -856,8 +854,8 @@
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.48633575" weight="0.22293815" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32919255" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.48759007" weight="0.31327432" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49079263" visible="true" weight="0.36283186" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17894737" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49079263" visible="true" weight="0.36283186" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17894737" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" weight="0.3298639" />
       <window_info anchor="right" id="Google Cloud Storage" order="4" />
@@ -925,10 +923,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="we cashup callback update" />
-    <MESSAGE value="setting https redirect" />
-    <MESSAGE value="we cashup url de callback display response" />
-    <MESSAGE value="we cashup url de callback - parse to html" />
     <MESSAGE value="we cashup url de callback - display response" />
     <MESSAGE value="we cashup url de callback - good parser" />
     <MESSAGE value="we cashup url de callback-sender reference" />
@@ -950,7 +944,11 @@
     <MESSAGE value="add biologie végétale" />
     <MESSAGE value="add Django rest JWT" />
     <MESSAGE value="static" />
-    <option name="LAST_COMMIT_MESSAGE" value="static" />
+    <MESSAGE value="allow host *" />
+    <MESSAGE value="mysql" />
+    <MESSAGE value="mysql 2" />
+    <MESSAGE value="mysql 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="mysql 3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1290,8 +1288,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/homeschool_production/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="27" column="19" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
+        <state relative-caret-position="160">
+          <caret line="159" column="37" selection-start-line="159" selection-start-column="37" selection-end-line="159" selection-end-column="37" />
         </state>
       </provider>
     </entry>
