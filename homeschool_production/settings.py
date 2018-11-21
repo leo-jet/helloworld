@@ -154,9 +154,9 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'HOST': '127.0.0.1',
+            'HOST': 'homeschoolCameroun.mysql.pythonanywhere-services.com',
             'PORT': '3306',
-            'NAME': 'homeschool',
+            'NAME': 'homeschoolCamero',
             'USER': 'root',
             'PASSWORD': 'leojet2017!',
         }
