@@ -157,7 +157,7 @@ else:
             'HOST': 'homeschoolCameroun.mysql.pythonanywhere-services.com',
             'PORT': '3306',
             'NAME': 'homeschoolCamero',
-            'USER': 'root',
+            'USER': 'homeschoolCameroun',
             'PASSWORD': 'leojet2017!',
         }
     }
