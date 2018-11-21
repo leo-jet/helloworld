@@ -17,6 +17,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_jwt.views import obtain_jwt_token
 from allauth.account.views import confirm_email as allauthemailconfirmation
 
 urlpatterns = [
@@ -25,6 +26,7 @@ urlpatterns = [
     url(r'^', include('homeschool.urls')),
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^api-token/', obtain_jwt_token),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^comments/', include("comments.urls", namespace='comments')),
     url(r'^post/', include("posts.urls", namespace='posts')),

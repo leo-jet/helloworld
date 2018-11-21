@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
 
 
     # The following apps are required:
@@ -66,7 +67,6 @@ INSTALLED_APPS = [
 
     'ckeditor',
     'ckeditor_uploader'
-
 ]
 
 SITE_ID = 1
@@ -92,6 +92,7 @@ ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login'
 DEFAULT_FROM_EMAIL = "Homeschool-Team"
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -131,13 +132,35 @@ WSGI_APPLICATION = 'homeschool_production.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if os.getenv('GAE_APPLICATION', None):
+    # Running on production App Engine, so connect to Google Cloud SQL using
+    # the unix socket at /cloudsql/<your-cloudsql-connection string>
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/homescool-165507:us-central1:homeschool-sql',
+            'USER': 'root',
+            'PASSWORD': 'leojet2017!',
+            'NAME': 'homeschool',
+        }
     }
-}
-
+else:
+    # Running locally so connect to either a local MySQL instance or connect to
+    # Cloud SQL via the proxy. To start the proxy via command line:
+    #
+    #     $ cloud_sql_proxy -instances=[INSTANCE_CONNECTION_NAME]=tcp:3306
+    #
+    # See https://cloud.google.com/sql/docs/mysql-connect-proxy
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
+            'NAME': 'homeschool',
+            'USER': 'root',
+            'PASSWORD': 'leojet2017!',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -159,7 +182,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
@@ -192,7 +219,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'https://storage.googleapis.com/homeschool-bucket/static/'
 STATIC_ROOT = '/home/leo/Bureau/homeschoolStatic'
 
 STATICFILES_DIRS = (
@@ -217,3 +244,5 @@ MEDIA_ROOT = "/home/leo/Bureau/media_cdn"
 CKEDITOR_UPLOAD_PATH = "uploads/"
 
 #SECURE_SSL_REDIRECT = True
+
+CORS_ORIGIN_ALLOW_ALL = True
