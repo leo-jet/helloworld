@@ -219,8 +219,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = 'https://storage.googleapis.com/homeschool-bucket/static/'
-STATIC_ROOT = '/home/leo/Bureau/homeschoolStatic'
+STATIC_URL = 'homeschoolStatic'
+STATIC_ROOT = 'homeschoolStatic'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
